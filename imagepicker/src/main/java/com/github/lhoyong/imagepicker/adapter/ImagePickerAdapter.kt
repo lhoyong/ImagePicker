@@ -7,11 +7,15 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.github.lhoyong.imagepicker.R
 import com.github.lhoyong.imagepicker.model.Image
+import com.github.lhoyong.imagepicker.util.GlideApp
 
 class ImagePickerAdapter : ListAdapter<Image, ImagePickerViewHolder>(diffUtil) {
+
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagePickerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
@@ -21,6 +25,8 @@ class ImagePickerAdapter : ListAdapter<Image, ImagePickerViewHolder>(diffUtil) {
     override fun onBindViewHolder(holder: ImagePickerViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
+    override fun getItemId(position: Int): Long = position.toLong()
 }
 
 class ImagePickerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -29,8 +35,9 @@ class ImagePickerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(image: Image) {
 
-        Glide.with(imageView)
+        GlideApp.with(imageView)
             .load(image.path)
+            .centerCrop()
             .into(imageView)
     }
 }

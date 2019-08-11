@@ -28,8 +28,14 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:scrollbars="vertical"
         app:layoutManager="GridLayoutManager"
-        app:spanCount="4"
+        app:spanCount="3"
         tools:itemCount="3"
         tools:listitem="@layout/item_image" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

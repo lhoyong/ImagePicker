@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
@@ -145,7 +146,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
             (recycler_view.adapter as ImagePickerAdapter).submitList(imageList)
         }
 
-
+        progress_bar.isVisible = false
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {

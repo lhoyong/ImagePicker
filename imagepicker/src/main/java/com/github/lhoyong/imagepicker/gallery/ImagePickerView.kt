@@ -10,12 +10,17 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StableIdKeyProvider
+import androidx.recyclerview.selection.StorageStrategy
 import com.github.lhoyong.imagepicker.R
+import com.github.lhoyong.imagepicker.adapter.ImageDetailLookup
 import com.github.lhoyong.imagepicker.adapter.ImagePickerAdapter
 import com.github.lhoyong.imagepicker.model.Image
 import com.github.lhoyong.imagepicker.util.PermissionUtil
@@ -29,9 +34,12 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         private const val REQUEST_PERMISSION = 1013
 
         private const val LOADER_ID = 3327
+
+        private const val MAXIMUM_SELECTION = 30
     }
 
     private val imageList = mutableListOf<Image>()
+    private var tracker: SelectionTracker<Long>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,11 +65,13 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        configureToolbar()
+
         recycler_view.apply {
             adapter = ImagePickerAdapter()
         }
+        configureTracker()
 
-        configureToolbar()
     }
 
     override fun onStart() {
@@ -163,6 +173,48 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
                 }
                 else -> super.onOptionsItemSelected(it)
             }
+        }
+    }
+
+    private fun configureTracker() {
+        tracker = SelectionTracker.Builder<Long>(
+            "select_id",
+            recycler_view,
+            StableIdKeyProvider(recycler_view),
+            ImageDetailLookup(recycler_view),
+            StorageStrategy.createLongStorage()
+        )
+            .withOnItemActivatedListener { item, e ->
+                true
+            }
+            .withSelectionPredicate(selectionPredicate)
+            .build()
+
+        tracker?.let {
+            (recycler_view.adapter as ImagePickerAdapter).setSelectedTracker(it)
+        }
+
+    }
+
+    private val selectionPredicate = object : SelectionTracker.SelectionPredicate<Long>() {
+        override fun canSelectMultiple(): Boolean {
+            return true
+        }
+
+        override fun canSetStateForKey(key: Long, nextState: Boolean): Boolean {
+            return if (tracker?.selection?.size() ?: 0 >= MAXIMUM_SELECTION && nextState) {
+                Toast.makeText(
+                    requireContext(),
+                    "You can only select $MAXIMUM_SELECTION items in the list.", Toast.LENGTH_SHORT
+                ).show()
+                false
+            } else {
+                true
+            }
+        }
+
+        override fun canSetStateAtPosition(position: Int, nextState: Boolean): Boolean {
+            return true
         }
     }
 

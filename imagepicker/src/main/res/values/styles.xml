@@ -15,4 +15,9 @@
         <item name="android:windowBackground">@color/white</item>
 
     </style>
+
+    <style name="AppbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+    </style>
 </resources>

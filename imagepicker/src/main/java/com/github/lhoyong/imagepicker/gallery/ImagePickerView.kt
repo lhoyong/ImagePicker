@@ -9,9 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.loader.app.LoaderManager
@@ -54,10 +52,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(R.layout.fragment_image_picker, container, false)
-
-        return rootView
-
+        return inflater.inflate(R.layout.fragment_image_picker, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,6 +61,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
             adapter = ImagePickerAdapter()
         }
 
+        configureToolbar()
     }
 
     override fun onStart() {
@@ -98,7 +94,6 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         }
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK) {
             super.onActivityResult(requestCode, resultCode, data)
@@ -120,7 +115,6 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val sortOrder = MediaStore.Images.Media.DATE_ADDED + " DESC"
 
-        Log.e("createLoader", "create")
         return CursorLoader(requireContext(), uri, projection, null, null, sortOrder)
     }
 
@@ -128,7 +122,6 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         data ?: return
 
         val columnIndex = data.getColumnIndex(MediaStore.Images.Media.DATA)
-        //val items = ArrayList<Uri>()
 
         while (data.moveToNext()) {
             val str = data.getString(columnIndex)
@@ -136,11 +129,6 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
             imageList.add(Image(path.toString(), false))
         }
 
-        /* while (items.size < 512 && data.moveToNext()) {
-             val str = data.getString(columnIndex)
-             items.add(Uri.fromFile(File(str)))
-         }*/
-        Log.e("load finish", "${imageList.size}")
         data.moveToFirst()
         if (imageList.isNotEmpty()) {
             (recycler_view.adapter as ImagePickerAdapter).submitList(imageList)
@@ -150,7 +138,32 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
-// reset
+
+    }
+
+
+    private fun configureToolbar() {
+
+        // set left icon , inflate menu
+        tool_bar.apply {
+            setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
+            inflateMenu(R.menu.menu)
+        }
+
+        // left icon click event
+        tool_bar.setNavigationOnClickListener {
+            dismiss()
+        }
+
+        tool_bar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_done -> {
+
+                    true
+                }
+                else -> super.onOptionsItemSelected(it)
+            }
+        }
     }
 
 

@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:elevation="4dp"
+        android:paddingBottom="4dp"
         android:theme="@style/AppbarStyle">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             tools:layout_height="56dp" />
 
@@ -28,12 +28,24 @@
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:clipToPadding="false"
+        android:paddingTop="?attr/actionBarSize"
         android:scrollbars="vertical"
         app:layoutManager="GridLayoutManager"
         app:spanCount="3"
         tools:itemCount="3"
         tools:listitem="@layout/item_image" />
+
+    <!--  <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/recycler_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scrollbars="vertical"
+          app:layoutManager="GridLayoutManager"
+          app:layout_behavior="@string/appbar_scrolling_view_behavior"
+          app:spanCount="3"
+          tools:itemCount="3"
+          tools:listitem="@layout/item_image" />-->
 
     <ProgressBar
         android:id="@+id/progress_bar"

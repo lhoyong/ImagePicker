@@ -23,6 +23,7 @@ import com.github.lhoyong.imagepicker.R
 import com.github.lhoyong.imagepicker.adapter.ImageDetailLookup
 import com.github.lhoyong.imagepicker.adapter.ImagePickerAdapter
 import com.github.lhoyong.imagepicker.model.Image
+import com.github.lhoyong.imagepicker.util.GridSpacingItemDecoration
 import com.github.lhoyong.imagepicker.util.PermissionUtil
 import kotlinx.android.synthetic.main.fragment_image_picker.*
 import java.io.File
@@ -69,6 +70,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
 
         recycler_view.apply {
             adapter = ImagePickerAdapter()
+            addItemDecoration(GridSpacingItemDecoration(3, 1, true))
         }
         configureTracker()
 
@@ -184,7 +186,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
             ImageDetailLookup(recycler_view),
             StorageStrategy.createLongStorage()
         )
-            .withOnItemActivatedListener { item, e ->
+            .withOnItemActivatedListener { _, _ ->
                 true
             }
             .withSelectionPredicate(selectionPredicate)

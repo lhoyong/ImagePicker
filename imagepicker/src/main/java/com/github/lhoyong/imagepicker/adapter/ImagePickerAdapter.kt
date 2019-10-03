@@ -61,8 +61,9 @@ class ImagePickerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 val diffUtil = object : DiffUtil.ItemCallback<Image>() {
     override fun areItemsTheSame(oldItem: Image, newItem: Image): Boolean {
-        return oldItem.selected == newItem.selected && oldItem.path == newItem.path
+        return oldItem.path.toString() == newItem.path.toString()
     }
 
-    override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean = oldItem == newItem
+    override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean =
+        oldItem.selected == newItem.selected
 }

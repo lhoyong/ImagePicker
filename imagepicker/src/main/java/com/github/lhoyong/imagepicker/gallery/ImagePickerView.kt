@@ -22,6 +22,7 @@ import androidx.recyclerview.selection.StorageStrategy
 import com.github.lhoyong.imagepicker.R
 import com.github.lhoyong.imagepicker.adapter.ImageDetailLookup
 import com.github.lhoyong.imagepicker.adapter.ImagePickerAdapter
+import com.github.lhoyong.imagepicker.core.ImageCallbackListener
 import com.github.lhoyong.imagepicker.model.Image
 import com.github.lhoyong.imagepicker.util.GridSpacingItemDecoration
 import com.github.lhoyong.imagepicker.util.PermissionUtil
@@ -38,6 +39,8 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
 
         private const val MAXIMUM_SELECTION = 30
     }
+
+    private lateinit var listener: ImageCallbackListener
 
     private val imageList = mutableListOf<Image>()
     private var tracker: SelectionTracker<Long>? = null
@@ -111,7 +114,6 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
             super.onActivityResult(requestCode, resultCode, data)
             return
         }
-
         if (requestCode == REQUEST_GALLERY) {
             data?.data?.let { uri ->
                 Log.e("uri", uri.toString())
@@ -122,7 +124,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
 
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        if (id != LOADER_ID) throw IllegalStateException("illegal loader id: $id")
+        check(id == LOADER_ID) { "illegal loader id: $id" }
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val sortOrder = MediaStore.Images.Media.DATE_ADDED + " DESC"
@@ -138,7 +140,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         while (data.moveToNext()) {
             val str = data.getString(columnIndex)
             val path = Uri.fromFile(File(str))
-            imageList.add(Image(path.toString(), false))
+            imageList.add(Image(path, false))
         }
 
         data.moveToFirst()
@@ -152,7 +154,6 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
     override fun onLoaderReset(loader: Loader<Cursor>) {
 
     }
-
 
     private fun configureToolbar() {
 
@@ -170,12 +171,17 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         tool_bar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_done -> {
-
+                    selectedList()?.let { uris -> listener.onLoad(uris) }
+                    dismiss()
                     true
                 }
                 else -> super.onOptionsItemSelected(it)
             }
         }
+    }
+
+    private fun selectedList(): List<Uri>? {
+        return tracker?.selection?.map { imageList[it.toInt()].path }
     }
 
     private fun configureTracker() {
@@ -220,5 +226,11 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         }
     }
 
-
+    fun onImageLoaderListener(action: (List<Uri>) -> Unit) {
+        listener = object : ImageCallbackListener {
+            override fun onLoad(uriList: List<Uri>) {
+                action(uriList)
+            }
+        }
+    }
 }

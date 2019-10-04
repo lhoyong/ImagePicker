@@ -13,6 +13,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
@@ -22,6 +23,7 @@ import androidx.recyclerview.selection.StorageStrategy
 import com.github.lhoyong.imagepicker.R
 import com.github.lhoyong.imagepicker.adapter.ImageDetailLookup
 import com.github.lhoyong.imagepicker.adapter.ImagePickerAdapter
+import com.github.lhoyong.imagepicker.core.Config
 import com.github.lhoyong.imagepicker.core.ImageCallbackListener
 import com.github.lhoyong.imagepicker.model.Image
 import com.github.lhoyong.imagepicker.util.GridSpacingItemDecoration
@@ -31,7 +33,7 @@ import java.io.File
 
 class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
-    private companion object {
+    companion object {
         private const val REQUEST_GALLERY = 1011
         private const val REQUEST_PERMISSION = 1013
 
@@ -40,6 +42,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         private const val MAXIMUM_SELECTION = 30
     }
 
+    private var maxSize = MAXIMUM_SELECTION
     private lateinit var listener: ImageCallbackListener
 
     private val imageList = mutableListOf<Image>()
@@ -230,6 +233,36 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         listener = object : ImageCallbackListener {
             override fun onLoad(uriList: List<Uri>) {
                 action(uriList)
+            }
+        }
+    }
+
+    private fun onImageLoaderListener(l: ImageCallbackListener?) {
+        l?.let { this.listener = it }
+    }
+
+    fun config(config: Config?) {
+        config?.let {
+            maxSize = it.maximumSize ?: MAXIMUM_SELECTION
+        }
+    }
+
+
+    class Builder {
+
+        var config: Config? = null
+        var builderListener: ImageCallbackListener? = null
+
+        fun config(config: Config) = apply { this.config = config }
+
+        fun onImageLoaderListener(l: ImageCallbackListener?) =
+            apply { l?.let { builderListener = it } }
+
+        fun build(fm: FragmentManager, tag: String? = null) = apply {
+            ImagePickerView().apply {
+                config(config)
+                onImageLoaderListener(builderListener)
+                show(fm, tag)
             }
         }
     }

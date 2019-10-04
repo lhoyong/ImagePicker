@@ -1,12 +1,16 @@
 package com.github.lhoyong.pinedimagepicker
 
+import android.net.Uri
 import android.os.Bundle
+import android.security.ConfirmationPrompt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.lhoyong.imagepicker.core.Config
+import com.github.lhoyong.imagepicker.core.ImageCallbackListener
 import com.github.lhoyong.imagepicker.gallery.ImagePickerView
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ImageCallbackListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,9 +28,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openImagePicker() {
-        val picker = ImagePickerView()
-        picker.onImageLoaderListener { (recycler_view.adapter as ImageAdapter).submitList(it) }
-        picker.show(supportFragmentManager, null)
+
+        val config = Config.Builder().max(11).build()
+
+        ImagePickerView.Builder()
+            .config(config)
+            .onImageLoaderListener(this)
+            .build(supportFragmentManager)
+    }
+
+    override fun onLoad(uriList: List<Uri>) {
+        (recycler_view.adapter as ImageAdapter).submitList(uriList)
     }
 
 }

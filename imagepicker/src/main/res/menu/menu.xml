@@ -5,5 +5,5 @@
         android:id="@+id/menu_done"
         android:icon="@drawable/ic_check_black_24dp"
         android:title="@string/menu_done"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

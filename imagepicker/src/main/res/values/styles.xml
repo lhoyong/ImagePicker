@@ -19,5 +19,6 @@
     <style name="AppbarStyle">
         <item name="android:background">@color/white</item>
         <item name="colorControlHighlight">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/black</item>
     </style>
 </resources>

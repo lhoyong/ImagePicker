@@ -1,8 +1,8 @@
 package com.github.lhoyong.imagepicker.core
 
 /**
- *  ImagePickerView Configure
- *
+ * ImagePickerView Configure
+ * max()  [com.github.lhoyong.imagepicker.core.Config]
  */
 class Config(val maximumSize: Int? = null) {
 

@@ -28,6 +28,7 @@ import com.github.lhoyong.imagepicker.core.ImageCallbackListener
 import com.github.lhoyong.imagepicker.model.Image
 import com.github.lhoyong.imagepicker.util.GridSpacingItemDecoration
 import com.github.lhoyong.imagepicker.util.PermissionUtil
+import com.github.lhoyong.imagepicker.util.StringUtil
 import kotlinx.android.synthetic.main.fragment_image_picker.*
 import java.io.File
 
@@ -213,11 +214,9 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         }
 
         override fun canSetStateForKey(key: Long, nextState: Boolean): Boolean {
-            return if (tracker?.selection?.size() ?: 0 >= MAXIMUM_SELECTION && nextState) {
-                Toast.makeText(
-                    requireContext(),
-                    "You can only select $MAXIMUM_SELECTION items in the list.", Toast.LENGTH_SHORT
-                ).show()
+            val selectedCount = tracker?.selection?.size() ?: 0
+            return if (selectedCount >= maxSize && nextState) {
+                showLimitToast(maxSize)
                 false
             } else {
                 true
@@ -227,6 +226,17 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         override fun canSetStateAtPosition(position: Int, nextState: Boolean): Boolean {
             return true
         }
+    }
+
+    private fun showLimitToast(count: Int) {
+        Toast.makeText(
+            requireContext(),
+            StringUtil.getStringRes(
+                requireContext(),
+                R.string.select_max_toast,
+                count
+            ), Toast.LENGTH_SHORT
+        ).show()
     }
 
     fun onImageLoaderListener(action: (List<Uri>) -> Unit) {
@@ -247,11 +257,9 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         }
     }
 
-
     class Builder {
-
-        var config: Config? = null
-        var builderListener: ImageCallbackListener? = null
+        private var config: Config? = null
+        private var builderListener: ImageCallbackListener? = null
 
         fun config(config: Config) = apply { this.config = config }
 

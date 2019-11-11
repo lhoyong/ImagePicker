@@ -12,8 +12,7 @@ object PermissionUtil {
         ActivityCompat.requestPermissions(
             activity,
             arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.READ_EXTERNAL_STORAGE
             ),
             requestCode
         )
@@ -23,9 +22,6 @@ object PermissionUtil {
         val permission = ActivityCompat.checkSelfPermission(
             context,
             Manifest.permission.READ_EXTERNAL_STORAGE
-        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-            context,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
         ) != PackageManager.PERMISSION_GRANTED
 
         isDenied(permission)

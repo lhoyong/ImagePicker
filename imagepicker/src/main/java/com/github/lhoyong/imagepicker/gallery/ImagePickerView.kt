@@ -55,9 +55,13 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
 
         PermissionUtil.hasGalleryPermissionDenied(requireContext()) {
             if (it) {
-                PermissionUtil.requestGalleryPermission(requireActivity(), REQUEST_PERMISSION)
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ), REQUEST_PERMISSION
+                )
             } else {
-                LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this)
+                loadImages()
             }
         }
 
@@ -99,16 +103,14 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         grantResults: IntArray
     ) {
         if (requestCode == REQUEST_PERMISSION) {
-            if (permissions.size == 2 &&
+            if (permissions.size == 1 &&
                 permissions[0] == Manifest.permission.READ_EXTERNAL_STORAGE &&
-                grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                permissions[1] == Manifest.permission.WRITE_EXTERNAL_STORAGE &&
-                grantResults[1] == PackageManager.PERMISSION_GRANTED
-
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
-                LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this)
+                println(123)
+                loadImages()
             } else {
-                //denied
+                Log.d("Missing Permission", "Check for permission")
             }
         }
     }
@@ -124,6 +126,10 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
             }
         }
 
+    }
+
+    private fun loadImages() {
+        LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this)
     }
 
 

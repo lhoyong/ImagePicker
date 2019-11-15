@@ -18,13 +18,7 @@ Support DayNight Mode.
 
 ## ScreenShot
 
-<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/1.png" width = "264" height = "464"/>
-
-<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/2.png" width = "264" height = "464"/>
-
-<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/3.png" width = "264" height = "464"/>
-
-
+<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/1.png?raw=true" width = "264" height = "464"/><img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/2.png?raw=true" width = "264" height = "464"/><img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/3.png?raw=true" width = "264" height = "464"/>
 
 ## Setup
 

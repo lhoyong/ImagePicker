@@ -164,7 +164,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
 
         // set left icon , inflate menu
         tool_bar.apply {
-            setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
+            setNavigationIcon(R.drawable.ic_arrow_24dp)
             inflateMenu(R.menu.menu)
         }
 

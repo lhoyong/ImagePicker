@@ -1,4 +1,4 @@
-package com.github.lhoyong.pinedimagepicker
+package com.github.lhoyong.imagepickerview
 
 import android.net.Uri
 import android.view.LayoutInflater

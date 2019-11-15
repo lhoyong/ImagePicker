@@ -1,4 +1,4 @@
-package com.github.lhoyong.imagepicker.gallery
+package com.github.lhoyong.imagepickerview.gallery
 
 import android.Manifest
 import android.app.Activity
@@ -17,12 +17,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import com.github.lhoyong.imagepicker.R
-import com.github.lhoyong.imagepicker.adapter.ImagePickerAdapter
-import com.github.lhoyong.imagepicker.core.Config
-import com.github.lhoyong.imagepicker.core.ImageCallbackListener
-import com.github.lhoyong.imagepicker.model.Image
-import com.github.lhoyong.imagepicker.util.*
+import com.github.lhoyong.imagepickerview.R
+import com.github.lhoyong.imagepickerview.adapter.ImagePickerAdapter
+import com.github.lhoyong.imagepickerview.core.Config
+import com.github.lhoyong.imagepickerview.core.ImageCallbackListener
+import com.github.lhoyong.imagepickerview.model.Image
+import com.github.lhoyong.imagepickerview.util.*
 import kotlinx.android.synthetic.main.fragment_image_picker.*
 import java.io.File
 

@@ -1,4 +1,4 @@
-package com.github.lhoyong.imagepicker;
+package com.github.lhoyong.imagepickerview;
 
 import org.junit.Test;
 

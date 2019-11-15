@@ -1,4 +1,4 @@
-package com.github.lhoyong.imagepicker.util
+package com.github.lhoyong.imagepickerview.util
 
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule

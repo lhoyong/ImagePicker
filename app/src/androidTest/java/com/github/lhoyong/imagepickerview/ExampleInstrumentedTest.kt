@@ -1,4 +1,4 @@
-package com.github.lhoyong.pinedimagepicker
+package com.github.lhoyong.imagepickerview
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4

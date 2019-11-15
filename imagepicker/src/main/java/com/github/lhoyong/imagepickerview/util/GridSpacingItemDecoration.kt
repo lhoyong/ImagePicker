@@ -1,4 +1,4 @@
-package com.github.lhoyong.imagepicker.util
+package com.github.lhoyong.imagepickerview.util
 
 import android.graphics.Rect
 import android.view.View

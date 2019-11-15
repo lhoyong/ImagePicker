@@ -1,12 +1,12 @@
-package com.github.lhoyong.pinedimagepicker
+package com.github.lhoyong.imagepickerview
 
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.github.lhoyong.imagepicker.core.Config
-import com.github.lhoyong.imagepicker.core.ImageCallbackListener
-import com.github.lhoyong.imagepicker.gallery.ImagePickerView
+import com.github.lhoyong.imagepickerview.core.Config
+import com.github.lhoyong.imagepickerview.core.ImageCallbackListener
+import com.github.lhoyong.imagepickerview.gallery.ImagePickerView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ImageCallbackListener {

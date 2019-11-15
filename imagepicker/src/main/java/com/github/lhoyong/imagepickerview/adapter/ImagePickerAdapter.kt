@@ -1,4 +1,4 @@
-package com.github.lhoyong.imagepicker.adapter
+package com.github.lhoyong.imagepickerview.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +7,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.github.lhoyong.imagepicker.R
-import com.github.lhoyong.imagepicker.model.Image
-import com.github.lhoyong.imagepicker.util.GlideApp
+import com.github.lhoyong.imagepickerview.R
+import com.github.lhoyong.imagepickerview.model.Image
+import com.github.lhoyong.imagepickerview.util.GlideApp
 import com.lhoyong.library.SmoothCheckBox
 
 class ImagePickerAdapter(

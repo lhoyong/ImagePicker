@@ -1,4 +1,4 @@
-package com.github.lhoyong.imagepicker.util
+package com.github.lhoyong.imagepickerview.util
 
 import android.Manifest
 import android.app.Activity

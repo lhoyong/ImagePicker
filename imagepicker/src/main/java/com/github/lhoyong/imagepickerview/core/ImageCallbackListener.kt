@@ -1,4 +1,4 @@
-package com.github.lhoyong.imagepicker.core
+package com.github.lhoyong.imagepickerview.core
 
 import android.net.Uri
 

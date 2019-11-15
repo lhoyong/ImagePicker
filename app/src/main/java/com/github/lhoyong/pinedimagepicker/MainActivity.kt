@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), ImageCallbackListener {
 
     private fun openImagePicker() {
 
-        val config = Config.Builder().max(11).build()
+        val config = Config.Builder().max(5).build()
 
         ImagePickerView.Builder()
             .config(config)

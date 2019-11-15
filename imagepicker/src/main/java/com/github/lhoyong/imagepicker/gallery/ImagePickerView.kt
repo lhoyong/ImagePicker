@@ -17,18 +17,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.selection.StableIdKeyProvider
-import androidx.recyclerview.selection.StorageStrategy
 import com.github.lhoyong.imagepicker.R
-import com.github.lhoyong.imagepicker.adapter.ImageDetailLookup
 import com.github.lhoyong.imagepicker.adapter.ImagePickerAdapter
 import com.github.lhoyong.imagepicker.core.Config
 import com.github.lhoyong.imagepicker.core.ImageCallbackListener
 import com.github.lhoyong.imagepicker.model.Image
-import com.github.lhoyong.imagepicker.util.GridSpacingItemDecoration
-import com.github.lhoyong.imagepicker.util.PermissionUtil
-import com.github.lhoyong.imagepicker.util.StringUtil
+import com.github.lhoyong.imagepicker.util.*
 import kotlinx.android.synthetic.main.fragment_image_picker.*
 import java.io.File
 
@@ -47,7 +41,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
     private lateinit var listener: ImageCallbackListener
 
     private val imageList = mutableListOf<Image>()
-    private var tracker: SelectionTracker<Long>? = null
+    private val selectedList = mutableListOf<Image>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,14 +71,13 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         configureToolbar()
 
         recycler_view.apply {
-            adapter = ImagePickerAdapter()
+            adapter = ImagePickerAdapter { selectedImage(it) }
             addItemDecoration(GridSpacingItemDecoration(3, 1, true))
         }
-        configureTracker()
-
     }
 
     override fun onStart() {
@@ -107,7 +100,6 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
                 permissions[0] == Manifest.permission.READ_EXTERNAL_STORAGE &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
-                println(123)
                 loadImages()
             } else {
                 Log.d("Missing Permission", "Check for permission")
@@ -146,16 +138,17 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         data ?: return
 
         val columnIndex = data.getColumnIndex(MediaStore.Images.Media.DATA)
-
+        var index = 0
         while (data.moveToNext()) {
             val str = data.getString(columnIndex)
             val path = Uri.fromFile(File(str))
-            imageList.add(Image(path, false))
+            imageList.add(Image(index, path, false))
+            index++
         }
 
         data.moveToFirst()
         if (imageList.isNotEmpty()) {
-            (recycler_view.adapter as ImagePickerAdapter).submitList(imageList)
+            updateList(imageList)
         }
 
         progress_bar.isVisible = false
@@ -191,46 +184,29 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
     }
 
     private fun selectedList(): List<Uri>? {
-        return tracker?.selection?.map { imageList[it.toInt()].path }
+        return imageList.filter { it.selected }.map { it.path }
     }
 
-    private fun configureTracker() {
-        tracker = SelectionTracker.Builder<Long>(
-            "select_id",
-            recycler_view,
-            StableIdKeyProvider(recycler_view),
-            ImageDetailLookup(recycler_view),
-            StorageStrategy.createLongStorage()
-        )
-            .withOnItemActivatedListener { _, _ ->
-                true
-            }
-            .withSelectionPredicate(selectionPredicate)
-            .build()
-
-        tracker?.let {
-            (recycler_view.adapter as ImagePickerAdapter).setSelectedTracker(it)
-        }
-
-    }
-
-    private val selectionPredicate = object : SelectionTracker.SelectionPredicate<Long>() {
-        override fun canSelectMultiple(): Boolean {
-            return true
-        }
-
-        override fun canSetStateForKey(key: Long, nextState: Boolean): Boolean {
-            val selectedCount = tracker?.selection?.size() ?: 0
-            return if (selectedCount >= maxSize && nextState) {
-                showLimitToast(maxSize)
-                false
+    private fun selectedImage(image: Image) {
+        if (image.selected) {
+            imageList.find { it == image }?.selected = false
+            selectedList.remove(image)
+            updateList(imageList)
+        } else {
+            if (selectedList.size < maxSize) {
+                imageList.find { it == image }?.selected = true
+                selectedList.add(image)
+                updateList(imageList)
             } else {
-                true
+                showLimitToast(maxSize)
             }
         }
+    }
 
-        override fun canSetStateAtPosition(position: Int, nextState: Boolean): Boolean {
-            return true
+    private fun updateList(items: List<Image>) {
+        (recycler_view.adapter as ImagePickerAdapter).apply {
+            submitList(null)
+            submitList(items)
         }
     }
 

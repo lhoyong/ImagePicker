@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.lhoyong.imagepickerview.R
 import com.github.lhoyong.imagepickerview.model.Image
 import com.github.lhoyong.imagepickerview.util.GlideApp
-import com.lhoyong.library.SmoothCheckBox
 
 class ImagePickerAdapter(
     private val callback: (Image) -> Unit
@@ -43,7 +43,7 @@ class ImagePickerViewHolder(
 
     private val imageView = view.findViewById<ImageView>(R.id.item_image)
     private val filter = view.findViewById<View>(R.id.image_filter)
-    private val checkbox = view.findViewById<SmoothCheckBox>(R.id.image_checkbox)
+    private val checkbox = view.findViewById<AppCompatCheckBox>(R.id.image_checkbox)
 
     fun bind(image: Image) {
 

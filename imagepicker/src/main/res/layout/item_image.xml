@@ -25,18 +25,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.lhoyong.library.SmoothCheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/image_checkbox"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:color_checked="@color/colorPrimary"
+        android:button="@drawable/bg_checkbox_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".05"
-        app:stroke_enable="true"
-        app:stroke_width="1dp" />
+        app:layout_constraintVertical_bias=".05" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

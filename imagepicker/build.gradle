@@ -9,7 +9,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.lhoyong'
-version = '1.0.1'
+version = '1.0.2'
 
 android {
     compileSdkVersion 29
@@ -49,8 +49,6 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:4.10.0"
     kapt "com.github.bumptech.glide:compiler:4.10.0"
-
-    api 'com.github.lhoyong:SmoothCheckBox:1.0.2'
 }
 
 repositories {

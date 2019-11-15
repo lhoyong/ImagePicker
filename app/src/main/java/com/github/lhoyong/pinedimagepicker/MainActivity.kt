@@ -2,9 +2,8 @@ package com.github.lhoyong.pinedimagepicker
 
 import android.net.Uri
 import android.os.Bundle
-import android.security.ConfirmationPrompt
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.github.lhoyong.imagepicker.core.Config
 import com.github.lhoyong.imagepicker.core.ImageCallbackListener
 import com.github.lhoyong.imagepicker.gallery.ImagePickerView
@@ -17,7 +16,7 @@ class MainActivity : AppCompatActivity(), ImageCallbackListener {
         setContentView(R.layout.activity_main)
 
         recycler_view.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = GridLayoutManager(this@MainActivity, 3)
             setHasFixedSize(true)
             adapter = ImageAdapter()
         }

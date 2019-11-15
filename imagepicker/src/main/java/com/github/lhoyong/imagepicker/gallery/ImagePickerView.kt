@@ -42,6 +42,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
 
     private val imageList = mutableListOf<Image>()
     private val selectedList = mutableListOf<Image>()
+    private var selectedText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +78,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         recycler_view.apply {
             adapter = ImagePickerAdapter { selectedImage(it) }
             addItemDecoration(GridSpacingItemDecoration(3, 1, true))
+            setHasFixedSize(true)
         }
     }
 
@@ -201,6 +203,7 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
                 showLimitToast(maxSize)
             }
         }
+        toolbarText(selectedList.size)
     }
 
     private fun updateList(items: List<Image>) {
@@ -219,6 +222,16 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
                 count
             ), Toast.LENGTH_SHORT
         ).show()
+    }
+
+    private fun toolbarText(count: Int) {
+        selectedText = if (count > 0) {
+            count.toString()
+        } else {
+            ""
+        }
+
+        tool_bar.title = selectedText
     }
 
     fun onImageLoaderListener(action: (List<Uri>) -> Unit) {

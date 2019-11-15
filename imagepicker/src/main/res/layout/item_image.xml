@@ -37,6 +37,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias=".05"
         app:stroke_enable="true"
-        app:stroke_width="2dp" />
+        app:stroke_width="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

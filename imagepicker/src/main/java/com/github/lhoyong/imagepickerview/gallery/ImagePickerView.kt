@@ -4,36 +4,33 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import android.view.*
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.CursorLoader
-import androidx.loader.content.Loader
 import com.github.lhoyong.imagepickerview.R
 import com.github.lhoyong.imagepickerview.adapter.ImagePickerAdapter
 import com.github.lhoyong.imagepickerview.core.Config
 import com.github.lhoyong.imagepickerview.core.ImageCallbackListener
+import com.github.lhoyong.imagepickerview.core.ImageLoader
+import com.github.lhoyong.imagepickerview.core.ImageLoaderImpl
 import com.github.lhoyong.imagepickerview.model.Image
-import com.github.lhoyong.imagepickerview.util.*
+import com.github.lhoyong.imagepickerview.util.GridSpacingItemDecoration
+import com.github.lhoyong.imagepickerview.util.PermissionUtil
+import com.github.lhoyong.imagepickerview.util.StringUtil
 import kotlinx.android.synthetic.main.fragment_image_picker.*
-import java.io.File
 
-class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> {
+class ImagePickerView : DialogFragment(), ImageLoader {
 
     companion object {
         private const val TAG = "ImagePickerView"
         private const val REQUEST_GALLERY = 1011
         private const val REQUEST_PERMISSION = 1013
-
-        private const val LOADER_ID = 3327
 
         private const val MAXIMUM_SELECTION = 30
     }
@@ -44,6 +41,8 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
     private val imageList = mutableListOf<Image>()
     private val selectedList = mutableListOf<Image>()
     private var selectedText = ""
+
+    private var imageLoader: ImageLoaderImpl? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +92,11 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        imageLoader = null
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -124,41 +128,17 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
     }
 
     private fun loadImages() {
-        LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this)
+        if (imageLoader == null) {
+            imageLoader = ImageLoaderImpl(requireContext())
+        }
+        imageLoader?.init(this, this)
+        // LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this)
     }
 
-
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        check(id == LOADER_ID) { "illegal loader id: $id" }
-        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val sortOrder = MediaStore.Images.Media.DATE_ADDED + " DESC"
-
-        return CursorLoader(requireContext(), uri, projection, null, null, sortOrder)
-    }
-
-    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        data ?: return
-
-        val columnIndex = data.getColumnIndex(MediaStore.Images.Media.DATA)
-        var index = 0
-        while (data.moveToNext()) {
-            val str = data.getString(columnIndex)
-            val path = Uri.fromFile(File(str))
-            imageList.add(Image(index, path, false))
-            index++
-        }
-
-        data.moveToFirst()
-        if (imageList.isNotEmpty()) {
-            updateList(imageList)
-        }
-
+    override fun loadFinish(list: List<Image>) {
+        imageList.addAll(list)
+        updateList(list)
         progress_bar.isVisible = false
-    }
-
-    override fun onLoaderReset(loader: Loader<Cursor>) {
-
     }
 
     private fun configureToolbar() {

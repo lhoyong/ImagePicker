@@ -29,6 +29,7 @@ import java.io.File
 class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     companion object {
+        private const val TAG = "ImagePickerView"
         private const val REQUEST_GALLERY = 1011
         private const val REQUEST_PERMISSION = 1013
 
@@ -193,16 +194,21 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
         if (image.selected) {
             imageList.find { it == image }?.selected = false
             selectedList.remove(image)
-            updateList(imageList)
         } else {
             if (selectedList.size < maxSize) {
                 imageList.find { it == image }?.selected = true
                 selectedList.add(image)
-                updateList(imageList)
             } else {
-                showLimitToast(maxSize)
+                Log.d(
+                    TAG, StringUtil.getStringRes(
+                        requireContext(),
+                        R.string.select_max_toast,
+                        maxSize
+                    )
+                )
             }
         }
+        updateList(imageList)
         toolbarText(selectedList.size)
     }
 
@@ -211,17 +217,6 @@ class ImagePickerView : DialogFragment(), LoaderManager.LoaderCallbacks<Cursor> 
             submitList(null)
             submitList(items)
         }
-    }
-
-    private fun showLimitToast(count: Int) {
-        Toast.makeText(
-            requireContext(),
-            StringUtil.getStringRes(
-                requireContext(),
-                R.string.select_max_toast,
-                count
-            ), Toast.LENGTH_SHORT
-        ).show()
     }
 
     private fun toolbarText(count: Int) {

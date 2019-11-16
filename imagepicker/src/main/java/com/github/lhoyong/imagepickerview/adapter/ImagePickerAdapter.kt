@@ -16,7 +16,6 @@ class ImagePickerAdapter(
     private val callback: (Image) -> Unit
 ) : ListAdapter<Image, ImagePickerViewHolder>(diffUtil) {
 
-
     init {
         setHasStableIds(true)
     }
@@ -33,7 +32,6 @@ class ImagePickerAdapter(
     override fun getItemId(position: Int): Long {
         return getItem(position)?.id?.toLong() ?: position.toLong()
     }
-
 }
 
 class ImagePickerViewHolder(
@@ -56,11 +54,11 @@ class ImagePickerViewHolder(
 
         if (image.selected) {
             filter.visibility = View.VISIBLE
-            checkbox.isChecked = true
         } else {
             filter.visibility = View.GONE
-            checkbox.isChecked = false
         }
+
+        checkbox.isChecked = image.selected
     }
 }
 

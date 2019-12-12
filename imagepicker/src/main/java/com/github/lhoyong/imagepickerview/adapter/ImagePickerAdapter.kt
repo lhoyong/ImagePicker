@@ -46,7 +46,7 @@ class ImagePickerViewHolder(
     fun bind(image: Image) {
 
         checkbox.setOnClickListener { listener.onChecked(image) }
-        imageView.setOnClickListener { listener.onClick(image) }
+        imageView.setOnClickListener { listener.onClick(imageView,image) }
 
         GlideApp.with(imageView)
             .load(image.path)

@@ -7,6 +7,8 @@ import com.github.lhoyong.imagepickerview.base.BaseActivity
 import com.github.lhoyong.imagepickerview.R
 import com.github.lhoyong.imagepickerview.model.Image
 import com.github.lhoyong.imagepickerview.util.EXTRA_IMAGE
+import com.github.lhoyong.imagepickerview.util.GlideApp
+import kotlinx.android.synthetic.main.detail.*
 
 class Detail : BaseActivity(R.layout.detail) {
 
@@ -23,6 +25,17 @@ class Detail : BaseActivity(R.layout.detail) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (image == null) {
+            finish()
+            return
+        }
+
+        image?.let {
+            GlideApp.with(this)
+                .load(it.path)
+                .into(detail_image)
+        }
 
     }
 }

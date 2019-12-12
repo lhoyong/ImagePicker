@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.core.view.isVisible
 import com.github.lhoyong.imagepickerview.base.BaseActivity
 import com.github.lhoyong.imagepickerview.R
@@ -18,10 +19,7 @@ import com.github.lhoyong.imagepickerview.core.ImageLoader
 import com.github.lhoyong.imagepickerview.core.ImageLoaderImpl
 import com.github.lhoyong.imagepickerview.model.Image
 import com.github.lhoyong.imagepickerview.model.SetUp
-import com.github.lhoyong.imagepickerview.util.EXTRA_SETUP
-import com.github.lhoyong.imagepickerview.util.GridSpacingItemDecoration
-import com.github.lhoyong.imagepickerview.util.PermissionUtil
-import com.github.lhoyong.imagepickerview.util.StringUtil
+import com.github.lhoyong.imagepickerview.util.*
 import kotlinx.android.synthetic.main.gallery.*
 
 class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener {
@@ -200,7 +198,10 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener
         selectedImage(image)
     }
 
-    override fun onClick(image: Image) {
-        startActivity(Detail.starterIntent(this, image))
+    override fun onClick(view: View, image: Image) {
+        startActivity(
+            Detail.starterIntent(this, image),
+            toOptionCompat(view, R.id.item_image).toBundle()
+        )
     }
 }

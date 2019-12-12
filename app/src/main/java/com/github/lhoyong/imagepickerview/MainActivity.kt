@@ -4,9 +4,8 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.github.lhoyong.imagepickerview.core.Config
 import com.github.lhoyong.imagepickerview.core.ImageCallbackListener
-import com.github.lhoyong.imagepickerview.gallery.ImagePickerView
+import com.github.lhoyong.imagepickerview.core.config
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ImageCallbackListener {
@@ -27,13 +26,14 @@ class MainActivity : AppCompatActivity(), ImageCallbackListener {
     }
 
     private fun openImagePicker() {
-
-        val config = Config.Builder().max(5).build()
-
         ImagePickerView.Builder()
-            .config(config)
+            .setup {
+                config {
+                    max { 5 }
+                }
+            }
             .onImageLoaderListener(this)
-            .build(supportFragmentManager)
+            .start(this)
     }
 
     override fun onLoad(uriList: List<Uri>) {

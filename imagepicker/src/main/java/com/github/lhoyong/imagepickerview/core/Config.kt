@@ -1,21 +1,23 @@
 package com.github.lhoyong.imagepickerview.core
 
+import com.github.lhoyong.imagepickerview.model.SetUp
+
 /**
  * ImagePickerView Configure
  * max()  [com.github.lhoyong.imagepickerview.core.Config]
  */
-class Config(val maximumSize: Int? = null) {
 
+class Config {
+    var max: Int = 30 // default
 
-    data class Builder(
-        var maximumSize: Int? = null
-    ) {
-        /**
-         *  @param max Select Size
-         *
-         */
-        fun max(max: Int) = apply { this.maximumSize = max }
-
-        fun build() = Config(maximumSize)
+    fun max(action: () -> Int) {
+        max = action()
     }
+
+    fun build(): Config = this
+
 }
+
+fun config(action: Config.() -> Unit) = Config().apply(action).build()
+
+fun Config?.toSetup() = SetUp(max = this?.max ?: 30)

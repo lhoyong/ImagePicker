@@ -1,31 +1,29 @@
-package com.github.lhoyong.imagepickerview.gallery
+package com.github.lhoyong.imagepickerview.ui
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
+import com.github.lhoyong.imagepickerview.base.BaseActivity
 import com.github.lhoyong.imagepickerview.R
 import com.github.lhoyong.imagepickerview.adapter.ImagePickerAdapter
-import com.github.lhoyong.imagepickerview.core.Config
 import com.github.lhoyong.imagepickerview.core.ImageCallbackListener
 import com.github.lhoyong.imagepickerview.core.ImageLoader
 import com.github.lhoyong.imagepickerview.core.ImageLoaderImpl
 import com.github.lhoyong.imagepickerview.model.Image
+import com.github.lhoyong.imagepickerview.model.SetUp
+import com.github.lhoyong.imagepickerview.util.EXTRA_SETUP
 import com.github.lhoyong.imagepickerview.util.GridSpacingItemDecoration
 import com.github.lhoyong.imagepickerview.util.PermissionUtil
 import com.github.lhoyong.imagepickerview.util.StringUtil
-import kotlinx.android.synthetic.main.fragment_image_picker.*
+import kotlinx.android.synthetic.main.gallery.*
 
-class ImagePickerView : DialogFragment(), ImageLoader {
+class Gallery : BaseActivity(R.layout.gallery), ImageLoader {
 
     companion object {
         private const val TAG = "ImagePickerView"
@@ -33,9 +31,16 @@ class ImagePickerView : DialogFragment(), ImageLoader {
         private const val REQUEST_PERMISSION = 1013
 
         private const val MAXIMUM_SELECTION = 30
+
+        fun starterIntent(context: Context, setup: SetUp?): Intent{
+            return Intent(context, Gallery::class.java).apply {
+                putExtra(EXTRA_SETUP, setup)
+            }
+        }
     }
 
-    private var maxSize = MAXIMUM_SELECTION
+    private var maxSize =
+        MAXIMUM_SELECTION
     private lateinit var listener: ImageCallbackListener
 
     private val imageList = mutableListOf<Image>()
@@ -44,35 +49,19 @@ class ImagePickerView : DialogFragment(), ImageLoader {
 
     private var imageLoader: ImageLoaderImpl? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle)
-
-        PermissionUtil.hasGalleryPermissionDenied(requireContext()) {
+    override fun onStart() {
+        super.onStart()
+        PermissionUtil.hasGalleryPermissionDenied(this) {
             if (it) {
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    ), REQUEST_PERMISSION
-                )
+                PermissionUtil.requestGalleryPermission(this, REQUEST_PERMISSION)
             } else {
                 loadImages()
             }
         }
-
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_image_picker, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         configureToolbar()
 
         recycler_view.apply {
@@ -82,15 +71,6 @@ class ImagePickerView : DialogFragment(), ImageLoader {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        dialog?.let {
-            it.window?.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -129,10 +109,9 @@ class ImagePickerView : DialogFragment(), ImageLoader {
 
     private fun loadImages() {
         if (imageLoader == null) {
-            imageLoader = ImageLoaderImpl(requireContext())
+            imageLoader = ImageLoaderImpl(this)
         }
         imageLoader?.init(this, this)
-        // LoaderManager.getInstance(this).initLoader(LOADER_ID, null, this)
     }
 
     override fun loadFinish(list: List<Image>) {
@@ -151,14 +130,14 @@ class ImagePickerView : DialogFragment(), ImageLoader {
 
         // left icon click event
         tool_bar.setNavigationOnClickListener {
-            dismiss()
+            finish()
         }
 
         tool_bar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_done -> {
                     selectedList()?.let { uris -> listener.onLoad(uris) }
-                    dismiss()
+                    finish()
                     true
                 }
                 else -> super.onOptionsItemSelected(it)
@@ -181,7 +160,7 @@ class ImagePickerView : DialogFragment(), ImageLoader {
             } else {
                 Log.d(
                     TAG, StringUtil.getStringRes(
-                        requireContext(),
+                        this,
                         R.string.select_max_toast,
                         maxSize
                     )
@@ -207,41 +186,5 @@ class ImagePickerView : DialogFragment(), ImageLoader {
         }
 
         tool_bar.title = selectedText
-    }
-
-    fun onImageLoaderListener(action: (List<Uri>) -> Unit) {
-        listener = object : ImageCallbackListener {
-            override fun onLoad(uriList: List<Uri>) {
-                action(uriList)
-            }
-        }
-    }
-
-    private fun onImageLoaderListener(l: ImageCallbackListener?) {
-        l?.let { this.listener = it }
-    }
-
-    fun config(config: Config?) {
-        config?.let {
-            maxSize = it.maximumSize ?: MAXIMUM_SELECTION
-        }
-    }
-
-    class Builder {
-        private var config: Config? = null
-        private var builderListener: ImageCallbackListener? = null
-
-        fun config(config: Config) = apply { this.config = config }
-
-        fun onImageLoaderListener(l: ImageCallbackListener?) =
-            apply { l?.let { builderListener = it } }
-
-        fun build(fm: FragmentManager, tag: String? = null) = apply {
-            ImagePickerView().apply {
-                config(config)
-                onImageLoaderListener(builderListener)
-                show(fm, tag)
-            }
-        }
     }
 }

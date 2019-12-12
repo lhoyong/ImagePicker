@@ -8,7 +8,7 @@
         android:id="@+id/item_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         android:transitionName="element_gallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="h,1:1"

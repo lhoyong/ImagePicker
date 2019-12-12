@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.core.view.isVisible
 import com.github.lhoyong.imagepickerview.base.BaseActivity
 import com.github.lhoyong.imagepickerview.R
+import com.github.lhoyong.imagepickerview.adapter.GalleryListListener
 import com.github.lhoyong.imagepickerview.adapter.ImagePickerAdapter
 import com.github.lhoyong.imagepickerview.core.ImageCallbackListener
 import com.github.lhoyong.imagepickerview.core.ImageLoader
@@ -23,7 +24,7 @@ import com.github.lhoyong.imagepickerview.util.PermissionUtil
 import com.github.lhoyong.imagepickerview.util.StringUtil
 import kotlinx.android.synthetic.main.gallery.*
 
-class Gallery : BaseActivity(R.layout.gallery), ImageLoader {
+class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener {
 
     companion object {
         private const val TAG = "ImagePickerView"
@@ -32,7 +33,7 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader {
 
         private const val MAXIMUM_SELECTION = 30
 
-        fun starterIntent(context: Context, setup: SetUp?): Intent{
+        fun starterIntent(context: Context, setup: SetUp?): Intent {
             return Intent(context, Gallery::class.java).apply {
                 putExtra(EXTRA_SETUP, setup)
             }
@@ -49,8 +50,15 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader {
 
     private var imageLoader: ImageLoaderImpl? = null
 
+    private val setUp by lazy { intent.getParcelableExtra<SetUp>(EXTRA_SETUP) }
+
     override fun onStart() {
         super.onStart()
+
+        setUp?.let {
+            maxSize = it.max
+        }
+
         PermissionUtil.hasGalleryPermissionDenied(this) {
             if (it) {
                 PermissionUtil.requestGalleryPermission(this, REQUEST_PERMISSION)
@@ -65,7 +73,7 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader {
         configureToolbar()
 
         recycler_view.apply {
-            adapter = ImagePickerAdapter { selectedImage(it) }
+            adapter = ImagePickerAdapter(this@Gallery)
             addItemDecoration(GridSpacingItemDecoration(3, 1, true))
             setHasFixedSize(true)
         }
@@ -186,5 +194,13 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader {
         }
 
         tool_bar.title = selectedText
+    }
+
+    override fun onChecked(image: Image) {
+        selectedImage(image)
+    }
+
+    override fun onClick(image: Image) {
+        startActivity(Detail.starterIntent(this, image))
     }
 }

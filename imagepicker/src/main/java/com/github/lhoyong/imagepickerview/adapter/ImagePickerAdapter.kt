@@ -13,7 +13,7 @@ import com.github.lhoyong.imagepickerview.model.Image
 import com.github.lhoyong.imagepickerview.util.GlideApp
 
 class ImagePickerAdapter(
-    private val callback: (Image) -> Unit
+    private val listener: GalleryListListener
 ) : ListAdapter<Image, ImagePickerViewHolder>(diffUtil) {
 
     init {
@@ -22,7 +22,7 @@ class ImagePickerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagePickerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
-        return ImagePickerViewHolder(view, callback)
+        return ImagePickerViewHolder(view, listener)
     }
 
     override fun onBindViewHolder(holder: ImagePickerViewHolder, position: Int) {
@@ -36,7 +36,7 @@ class ImagePickerAdapter(
 
 class ImagePickerViewHolder(
     view: View,
-    private val callback: (Image) -> Unit
+    private val listener: GalleryListListener
 ) : RecyclerView.ViewHolder(view) {
 
     private val imageView = view.findViewById<ImageView>(R.id.item_image)
@@ -45,7 +45,8 @@ class ImagePickerViewHolder(
 
     fun bind(image: Image) {
 
-        checkbox.setOnClickListener { callback(image) }
+        checkbox.setOnClickListener { listener.onChecked(image) }
+        imageView.setOnClickListener { listener.onClick(image) }
 
         GlideApp.with(imageView)
             .load(image.path)

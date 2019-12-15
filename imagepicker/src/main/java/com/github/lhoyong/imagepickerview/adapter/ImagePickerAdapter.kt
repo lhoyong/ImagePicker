@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -41,13 +41,12 @@ class ImagePickerViewHolder(
 
     private val imageView = view.findViewById<ImageView>(R.id.item_image)
     private val filter = view.findViewById<View>(R.id.image_filter)
-    private val checkbox = view.findViewById<AppCompatCheckBox>(R.id.image_checkbox)
+    private val checkbox = view.findViewById<AppCompatImageView>(R.id.image_checkbox)
 
     fun bind(image: Image) {
 
         checkbox.setOnClickListener { listener.onChecked(image) }
-        imageView.setOnClickListener { listener.onClick(imageView,image) }
-
+        imageView.setOnClickListener { listener.onClick(imageView, image) }
         GlideApp.with(imageView)
             .load(image.path)
             .centerCrop()
@@ -55,11 +54,11 @@ class ImagePickerViewHolder(
 
         if (image.selected) {
             filter.visibility = View.VISIBLE
+            checkbox.setBackgroundResource(R.drawable.bg_checked)
         } else {
             filter.visibility = View.GONE
+            checkbox.setBackgroundResource(R.drawable.bg_unchecked)
         }
-
-        checkbox.isChecked = image.selected
     }
 }
 

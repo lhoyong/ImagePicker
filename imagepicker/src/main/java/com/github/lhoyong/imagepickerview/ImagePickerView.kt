@@ -1,24 +1,33 @@
 package com.github.lhoyong.imagepickerview
 
+import android.app.Activity
 import android.content.Context
 import com.github.lhoyong.imagepickerview.core.Config
-import com.github.lhoyong.imagepickerview.core.ImageCallbackListener
 import com.github.lhoyong.imagepickerview.core.toSetup
 import com.github.lhoyong.imagepickerview.ui.Gallery
 
 class ImagePickerView {
 
     class Builder {
+
+        private companion object {
+            private const val REQUEST_CODE = 3030
+        }
+
         private var config: Config? = null
-        private var builderListener: ImageCallbackListener? = null
 
         fun setup(action: () -> Config) = apply { config = action() }
 
-        fun onImageLoaderListener(l: ImageCallbackListener?) =
-            apply { l?.let { builderListener = it } }
+        fun start(context: Context, requestCode: Int? = null) {
+            check(context is Activity) { "Check for context is Activity" }
+            context.startActivityForResult(
+                Gallery.starterIntent(
+                    context,
+                    config?.toSetup()
+                ),
+                requestCode ?: REQUEST_CODE
+            )
 
-        fun start(context: Context) {
-            context.startActivity(Gallery.starterIntent(context, config?.toSetup()))
         }
     }
 }

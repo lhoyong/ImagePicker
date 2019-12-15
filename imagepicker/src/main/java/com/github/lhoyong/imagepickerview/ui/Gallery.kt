@@ -14,7 +14,6 @@ import com.github.lhoyong.imagepickerview.base.BaseActivity
 import com.github.lhoyong.imagepickerview.R
 import com.github.lhoyong.imagepickerview.adapter.GalleryListListener
 import com.github.lhoyong.imagepickerview.adapter.ImagePickerAdapter
-import com.github.lhoyong.imagepickerview.core.ImageCallbackListener
 import com.github.lhoyong.imagepickerview.core.ImageLoader
 import com.github.lhoyong.imagepickerview.core.ImageLoaderImpl
 import com.github.lhoyong.imagepickerview.model.Image
@@ -40,7 +39,6 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener
 
     private var maxSize =
         MAXIMUM_SELECTION
-    private lateinit var listener: ImageCallbackListener
 
     private val imageList = mutableListOf<Image>()
     private val selectedList = mutableListOf<Image>()
@@ -49,6 +47,8 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener
     private var imageLoader: ImageLoaderImpl? = null
 
     private val setUp by lazy { intent.getParcelableExtra<SetUp>(EXTRA_SETUP) }
+
+    private var resultName = RESULT_NAME
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +66,7 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener
 
         setUp?.let {
             maxSize = it.max
+            resultName = it.name
         }
 
         PermissionUtil.hasGalleryPermissionDenied(this) {
@@ -145,8 +146,7 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener
         tool_bar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_done -> {
-                    selectedList()?.let { uris -> listener.onLoad(uris) }
-                    finish()
+                    selectedList()?.let { uris -> receiveImages(uris) }
                     true
                 }
                 else -> super.onOptionsItemSelected(it)
@@ -206,5 +206,13 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener
             Detail.starterIntent(this, image),
             toOptionCompat(view, R.id.item_image).toBundle()
         )
+    }
+
+    private fun receiveImages(uris: List<Uri>) {
+        val resultIntent = Intent().apply {
+            putParcelableArrayListExtra(resultName, ArrayList(uris))
+        }
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 }

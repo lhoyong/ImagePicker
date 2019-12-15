@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class SetUp(val max: Int) : Parcelable
+class SetUp(val max: Int, val name: String) : Parcelable

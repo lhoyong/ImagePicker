@@ -50,6 +50,17 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener
 
     private val setUp by lazy { intent.getParcelableExtra<SetUp>(EXTRA_SETUP) }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        configureToolbar()
+
+        recycler_view.apply {
+            adapter = ImagePickerAdapter(this@Gallery)
+            addItemDecoration(GridSpacingItemDecoration(3, 1, true))
+            setHasFixedSize(true)
+        }
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -65,18 +76,6 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener
             }
         }
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        configureToolbar()
-
-        recycler_view.apply {
-            adapter = ImagePickerAdapter(this@Gallery)
-            addItemDecoration(GridSpacingItemDecoration(3, 1, true))
-            setHasFixedSize(true)
-        }
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -121,6 +120,10 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener
     }
 
     override fun loadFinish(list: List<Image>) {
+        if (imageList.isNotEmpty()) {
+            return
+        }
+
         imageList.addAll(list)
         updateList(list)
         progress_bar.isVisible = false

@@ -2,7 +2,12 @@ package com.github.lhoyong.imagepickerview.ui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.github.lhoyong.imagepickerview.base.BaseActivity
 import com.github.lhoyong.imagepickerview.R
 import com.github.lhoyong.imagepickerview.model.Image
@@ -27,13 +32,35 @@ class Detail : BaseActivity(R.layout.detail) {
         super.onCreate(savedInstanceState)
 
         if (image == null) {
-            finish()
-            return
+            throw IllegalArgumentException("Missing Image")
         }
 
         image?.let {
             GlideApp.with(this)
                 .load(it.path)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        supportStartPostponedEnterTransition()
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        supportStartPostponedEnterTransition()
+                        return false
+                    }
+
+                })
                 .into(detail_image)
         }
 

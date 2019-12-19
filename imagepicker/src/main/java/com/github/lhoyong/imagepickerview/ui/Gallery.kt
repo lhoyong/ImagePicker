@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.github.lhoyong.imagepickerview.base.BaseActivity
 import com.github.lhoyong.imagepickerview.R
 import com.github.lhoyong.imagepickerview.adapter.GalleryListener
@@ -55,9 +56,10 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListener {
         configureToolbar()
 
         recycler_view.apply {
-            adapter = ImagePickerAdapter(this@Gallery)
+            adapter = ImagePickerAdapter(imageList, this@Gallery)
             addItemDecoration(GridSpacingItemDecoration(3, 1, true))
             setHasFixedSize(true)
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
     }
 
@@ -126,7 +128,7 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListener {
         }
 
         imageList.addAll(list)
-        updateList(list)
+        (recycler_view.adapter as ImagePickerAdapter).notifyDataSetChanged()
         progress_bar.isVisible = false
     }
 
@@ -176,15 +178,8 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListener {
                 )
             }
         }
-        updateList(imageList)
+        (recycler_view.adapter as ImagePickerAdapter).updateItem(image)
         toolbarText(selectedList.size)
-    }
-
-    private fun updateList(items: List<Image>) {
-        (recycler_view.adapter as ImagePickerAdapter).apply {
-            submitList(null)
-            submitList(items)
-        }
     }
 
     private fun toolbarText(count: Int) {

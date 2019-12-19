@@ -5,20 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.lhoyong.imagepickerview.R
 import com.github.lhoyong.imagepickerview.model.Image
 import com.github.lhoyong.imagepickerview.util.GlideApp
 
 class ImagePickerAdapter(
+    private val items: List<Image>,
     private val listener: GalleryListener
-) : ListAdapter<Image, ImagePickerViewHolder>(diffUtil) {
-
-    init {
-        setHasStableIds(true)
-    }
+) : RecyclerView.Adapter<ImagePickerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagePickerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
@@ -26,11 +21,14 @@ class ImagePickerAdapter(
     }
 
     override fun onBindViewHolder(holder: ImagePickerViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(items[position])
     }
 
-    override fun getItemId(position: Int): Long {
-        return getItem(position)?.id?.toLong() ?: position.toLong()
+    override fun getItemCount(): Int = items.size
+
+    fun updateItem(item: Image) {
+        val position = items.indexOf(item)
+        notifyItemChanged(position)
     }
 }
 
@@ -60,15 +58,4 @@ class ImagePickerViewHolder(
             checkbox.setBackgroundResource(R.drawable.bg_unchecked)
         }
     }
-}
-
-val diffUtil = object : DiffUtil.ItemCallback<Image>() {
-    override fun areItemsTheSame(oldItem: Image, newItem: Image): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-    override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean {
-        return oldItem == newItem
-    }
-
 }

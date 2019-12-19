@@ -1,7 +1,7 @@
 # ImagePickerView
 
 ![DOWNLOAD](https://jitpack.io/v/lhoyong/ImagePickerView.svg)
-
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ImagePickerView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/7976)
 
 
 This is Simple Android ImagePicker Library.
@@ -12,7 +12,7 @@ Support DayNight Mode.
 
 ## OverView
 
-<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/overview.gif" width = "264" height = "464"/>
+<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/overview.gif" width = "264" height = "464"/><img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/detail.gif" width = "264" height = "464"/>
 
 
 
@@ -49,24 +49,31 @@ Add ImagePickerView your Activity or Fragments  [Example](https://github.com/lho
 
 
 ~~~~kotlin
-val config = Config.Builder()
-                   .max(5)
-                   .build()
-
 ImagePickerView.Builder()
-   .config(config)
-   .onImageLoaderListener(this)
-   .build(supportFragmentManager)
+            .setup {
+                config {
+                    name { RESULT_NAME }
+                    max { 5 }
+                }
+            }
+            .start(this)	// if used fragment, .start(requireContext())
 ~~~~
 
 
 
-Finish image select task, update ui for `fun onLoad(uriList: List<Uri>)` 
+Finish image select task, update ui for `onActivityResult received data` 
 
+For Example
 ~~~~kotlin
-override fun onLoad(uriList: List<Uri>) {
-        (recycler_view.adapter as ImageAdapter).submitList(uriList)
-}
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            val images = data?.getParcelableArrayListExtra<Uri>(RESULT_NAME)
+            images?.let {
+                (recycler_view.adapter as ImageAdapter).submitList(it)
+            }
+        }
+    }
 ~~~~
 
 

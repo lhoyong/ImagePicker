@@ -12,7 +12,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import com.github.lhoyong.imagepickerview.base.BaseActivity
 import com.github.lhoyong.imagepickerview.R
-import com.github.lhoyong.imagepickerview.adapter.GalleryListListener
+import com.github.lhoyong.imagepickerview.adapter.GalleryListener
 import com.github.lhoyong.imagepickerview.adapter.ImagePickerAdapter
 import com.github.lhoyong.imagepickerview.core.ImageLoader
 import com.github.lhoyong.imagepickerview.core.ImageLoaderImpl
@@ -21,7 +21,7 @@ import com.github.lhoyong.imagepickerview.model.SetUp
 import com.github.lhoyong.imagepickerview.util.*
 import kotlinx.android.synthetic.main.gallery.*
 
-class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListListener {
+class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListener {
 
     companion object {
         private const val TAG = "ImagePickerView"

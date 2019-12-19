@@ -13,7 +13,7 @@ import com.github.lhoyong.imagepickerview.model.Image
 import com.github.lhoyong.imagepickerview.util.GlideApp
 
 class ImagePickerAdapter(
-    private val listener: GalleryListListener
+    private val listener: GalleryListener
 ) : ListAdapter<Image, ImagePickerViewHolder>(diffUtil) {
 
     init {
@@ -36,7 +36,7 @@ class ImagePickerAdapter(
 
 class ImagePickerViewHolder(
     view: View,
-    private val listener: GalleryListListener
+    private val listener: GalleryListener
 ) : RecyclerView.ViewHolder(view) {
 
     private val imageView = view.findViewById<ImageView>(R.id.item_image)
@@ -68,7 +68,7 @@ val diffUtil = object : DiffUtil.ItemCallback<Image>() {
     }
 
     override fun areContentsTheSame(oldItem: Image, newItem: Image): Boolean {
-        return oldItem.selected == newItem.selected
+        return oldItem == newItem
     }
 
 }

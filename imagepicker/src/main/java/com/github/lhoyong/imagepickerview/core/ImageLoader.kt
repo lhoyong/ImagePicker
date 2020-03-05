@@ -17,16 +17,15 @@ class ImageLoaderImpl(private val context: Context) : ImageLoader {
 
     private fun getFiles(context: Context): List<Image> {
         val fileList = mutableListOf<Image>()
-        val projection = arrayOf(
-            MediaStore.Files.FileColumns._ID
-        )
+        val projection = arrayOf(MediaStore.Files.FileColumns._ID)
+        val sortOrder = MediaStore.Images.Media._ID + " DESC"
 
         val cursor = context.contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             projection,
             null,
             null,
-            null
+            sortOrder
         )
 
         cursor?.use {

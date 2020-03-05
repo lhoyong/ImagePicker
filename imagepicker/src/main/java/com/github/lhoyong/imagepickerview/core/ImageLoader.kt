@@ -1,64 +1,46 @@
 package com.github.lhoyong.imagepickerview.core
 
 import android.content.Context
-import android.database.Cursor
 import android.net.Uri
-import android.os.Bundle
 import android.provider.MediaStore
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.CursorLoader
-import androidx.loader.content.Loader
 import com.github.lhoyong.imagepickerview.model.Image
-import java.io.File
 
 interface ImageLoader {
-    fun loadFinish(list: List<Image>)
+    fun load(action: (List<Image>) -> Unit)
 }
 
-class ImageLoaderImpl(private val context: Context) : LoaderManager.LoaderCallbacks<Cursor> {
+class ImageLoaderImpl(private val context: Context) : ImageLoader {
 
-    private lateinit var listener: ImageLoader
-
-    private companion object {
-        private const val LOADER_ID = 3327
+    override fun load(action: (List<Image>) -> Unit) {
+        action(getFiles(context))
     }
 
-    fun <T> init(owner: T, loader: ImageLoader) where T : LifecycleOwner, T : ViewModelStoreOwner {
-        listener = loader
-        LoaderManager.getInstance(owner).initLoader(LOADER_ID, null, this)
-    }
+    private fun getFiles(context: Context): List<Image> {
+        val fileList = mutableListOf<Image>()
+        val projection = arrayOf(
+            MediaStore.Files.FileColumns._ID
+        )
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        check(id == LOADER_ID) { "illegal loader id: $id" }
-        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val sortOrder = MediaStore.Images.Media.DATE_ADDED + " DESC"
+        val cursor = context.contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            projection,
+            null,
+            null,
+            null
+        )
 
-        return CursorLoader(context, uri, projection, null, null, sortOrder)
-    }
+        cursor?.use {
+            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
+            while (cursor.moveToNext()) {
+                val id = cursor.getLong(idColumn)
+                val contentUri = Uri.withAppendedPath(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    id.toString()
+                )
 
-    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        data ?: return
-
-        val imageList = mutableListOf<Image>()
-        val columnIndex = data.getColumnIndex(MediaStore.Images.Media.DATA)
-        var index = 0
-        while (data.moveToNext()) {
-            val str = data.getString(columnIndex)
-            val path = Uri.fromFile(File(str))
-            imageList.add(Image(index, path, false))
-            index++
+                fileList.add(Image(id.toInt(), contentUri, false))
+            }
         }
-
-        data.moveToFirst()
-        if (imageList.isNotEmpty()) {
-            listener.loadFinish(imageList)
-        }
-    }
-
-    override fun onLoaderReset(loader: Loader<Cursor>) {
-
+        return fileList
     }
 }

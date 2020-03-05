@@ -22,7 +22,7 @@ import com.github.lhoyong.imagepickerview.model.SetUp
 import com.github.lhoyong.imagepickerview.util.*
 import kotlinx.android.synthetic.main.gallery.*
 
-class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListener {
+class Gallery : BaseActivity(R.layout.gallery), GalleryListener {
 
     companion object {
         private const val TAG = "ImagePickerView"
@@ -45,7 +45,9 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListener {
     private val selectedList = mutableListOf<Image>()
     private var selectedText = ""
 
-    private var imageLoader: ImageLoaderImpl? = null
+    private val imageLoader: ImageLoader by lazy {
+        ImageLoaderImpl(this)
+    }
 
     private val setUp by lazy { intent.getParcelableExtra<SetUp>(EXTRA_SETUP) }
 
@@ -80,11 +82,6 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        imageLoader = null
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -112,24 +109,14 @@ class Gallery : BaseActivity(R.layout.gallery), ImageLoader, GalleryListener {
                 Log.e("uri", uri.toString())
             }
         }
-
     }
 
     private fun loadImages() {
-        if (imageLoader == null) {
-            imageLoader = ImageLoaderImpl(this)
+        imageLoader.load {
+            imageList.addAll(it)
+            (recycler_view.adapter as ImagePickerAdapter).notifyDataSetChanged()
+            progress_bar.isVisible = false
         }
-        imageLoader?.init(this, this)
-    }
-
-    override fun loadFinish(list: List<Image>) {
-        if (imageList.isNotEmpty()) {
-            return
-        }
-
-        imageList.addAll(list)
-        (recycler_view.adapter as ImagePickerAdapter).notifyDataSetChanged()
-        progress_bar.isVisible = false
     }
 
     private fun configureToolbar() {

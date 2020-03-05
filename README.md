@@ -12,13 +12,13 @@ Support DayNight Mode.
 
 ## OverView
 
-<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/overview.gif" width = "264" height = "464"/><img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/detail.gif" width = "264" height = "464"/>
+<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/anim.gif" width = "264" height = "464"/>
 
 
 
 ## ScreenShot
 
-<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/1.png?raw=true" width = "264" height = "464"/><img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/2.png?raw=true" width = "264" height = "464"/><img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/3.png?raw=true" width = "264" height = "464"/>
+<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/3.png?raw=true" width = "264" height = "464"/><img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/4.png?raw=true" width = "264" height = "464"/>
 
 ## Setup
 
@@ -26,19 +26,19 @@ Add root build.gradle
 
 ~~~~xml
 allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
+    repositories {
+	...
+	maven { url 'https://jitpack.io' }
+    }
+}
 ~~~~
 
 Add the dependency
 
 ~~~~xml
 dependencies {
-	        implementation 'com.github.lhoyong:ImagePickerView:latestVersion'
-	}
+    implementation 'com.github.lhoyong:ImagePickerView:latestVersion'
+}
 ~~~~
 
 
@@ -47,6 +47,8 @@ dependencies {
 
 Add ImagePickerView your Activity or Fragments  [Example](https://github.com/lhoyong/ImagePickerView/blob/master/app/src/main/java/com/github/lhoyong/imagepickerview/MainActivity.kt).
 
+When you [Click on the Image](https://github.com/lhoyong/ImagePickerView/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepickerview/adapter/GalleryAdapter.kt#L49), it will move to [Detail](https://github.com/lhoyong/ImagePickerView/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepickerview/ui/Detail.kt) Screen.
+If [Long Click](https://github.com/lhoyong/ImagePickerView/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepickerview/adapter/GalleryAdapter.kt#L57) Image, start scale Animations and visible checkbox. Bul Already Clicked Images, can not move to Detail Screen.
 
 ~~~~kotlin
 ImagePickerView.Builder()
@@ -80,7 +82,7 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 
 ## License
 
-	Copyright (C) 2019 lhoyong.
+	Copyright (C) 2020 lhoyong.
 	
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.

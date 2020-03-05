@@ -5,10 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.github.lhoyong.imagepickerview.R
 import com.github.lhoyong.imagepickerview.model.Image
 import com.github.lhoyong.imagepickerview.util.GlideApp
+import com.github.lhoyong.imagepickerview.util.scaleRevert
+import com.github.lhoyong.imagepickerview.util.scaleStart
 
 class ImagePickerAdapter(
     private val items: List<Image>,
@@ -43,19 +46,36 @@ class ImagePickerViewHolder(
 
     fun bind(image: Image) {
 
-        checkbox.setOnClickListener { listener.onChecked(image) }
-        imageView.setOnClickListener { listener.onClick(imageView, image) }
+        itemView.setOnClickListener {
+            if (listener.isMultipleChecked) {
+                listener.onChecked(image)
+            } else {
+                listener.onClick(imageView, image)
+            }
+        }
+
+        itemView.setOnLongClickListener {
+            if (!listener.isMultipleChecked) {
+                listener.onChecked(image)
+            }
+            return@setOnLongClickListener true
+        }
+
         GlideApp.with(imageView)
             .load(image.path)
             .centerCrop()
             .into(imageView)
 
         if (image.selected) {
-            filter.visibility = View.VISIBLE
-            checkbox.setBackgroundResource(R.drawable.bg_checked)
+            scaleStart(imageView) {
+                checkbox.isVisible = true
+                filter.isVisible = true
+            }
         } else {
-            filter.visibility = View.GONE
-            checkbox.setBackgroundResource(R.drawable.bg_unchecked)
+            scaleRevert(imageView) {
+                checkbox.isVisible = false
+                filter.isVisible = false
+            }
         }
     }
 }

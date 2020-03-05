@@ -53,6 +53,8 @@ class Gallery : BaseActivity(R.layout.gallery), GalleryListener {
 
     private var resultName = RESULT_NAME
 
+    override var isMultipleChecked: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         configureToolbar()
@@ -106,7 +108,7 @@ class Gallery : BaseActivity(R.layout.gallery), GalleryListener {
         }
         if (requestCode == REQUEST_GALLERY) {
             data?.data?.let { uri ->
-                Log.e("uri", uri.toString())
+                Log.d("uri", uri.toString())
             }
         }
     }
@@ -165,6 +167,7 @@ class Gallery : BaseActivity(R.layout.gallery), GalleryListener {
                 )
             }
         }
+        isMultipleChecked = isMultiCheckedChanged()
         (recycler_view.adapter as ImagePickerAdapter).updateItem(image)
         toolbarText(selectedList.size)
     }
@@ -197,4 +200,6 @@ class Gallery : BaseActivity(R.layout.gallery), GalleryListener {
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
     }
+
+    private fun isMultiCheckedChanged() = imageList.find { it.selected } != null
 }

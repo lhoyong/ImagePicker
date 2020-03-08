@@ -29,15 +29,14 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/image_checkbox"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".95"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".05"
-        app:srcCompat="@drawable/bg_checked" />
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toBottomOf="@id/item_image"
+        app:layout_constraintEnd_toEndOf="@id/item_image"
+        app:layout_constraintHorizontal_bias=".9"
+        app:layout_constraintStart_toStartOf="@id/item_image"
+        app:layout_constraintTop_toTopOf="@id/item_image"
+        app:layout_constraintVertical_bias=".1"
+        app:srcCompat="@drawable/bg_unchecked" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

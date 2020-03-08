@@ -67,13 +67,13 @@ class ImagePickerViewHolder(
             .into(imageView)
 
         if (image.selected) {
+            checkbox.setBackgroundResource(R.drawable.bg_checked)
             scaleStart(imageView) {
-                checkbox.isVisible = true
                 filter.isVisible = true
             }
         } else {
+            checkbox.setBackgroundResource(R.drawable.bg_unchecked)
             scaleRevert(imageView) {
-                checkbox.isVisible = false
                 filter.isVisible = false
             }
         }

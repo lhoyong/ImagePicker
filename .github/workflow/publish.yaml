@@ -16,6 +16,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - name: Create Publish File
+        env:
+          PUBLISH_KEY: ${{ secrets.PUBLISH_KEY }}
+          PUBLISH_USER: ${{ secrets.PUBLISH_USER }}
+        run: |
+          echo gpr.key=$PUBLISH_KEY $'\n' gpr.usr=PUBLISH_USER > publish.properties
       - name: Create aar
         run: ./gradlew clean assembleRelease
         env:

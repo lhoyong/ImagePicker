@@ -9,7 +9,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'maven-publish'
 
 def getVersionName = { ->
-    return "1.2.1"
+    return "1.2.2"
 }
 
 android {

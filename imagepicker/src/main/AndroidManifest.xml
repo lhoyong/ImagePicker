@@ -1,12 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.lhoyong.imagepickerview">
+    package="com.github.lhoyong.imagepicker">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application>
 
-        <activity android:name=".ui.Gallery" />
-        <activity android:name=".ui.Detail" />
+        <activity android:name="com.github.lhoyong.imagepicker.ui.Gallery" />
+        <activity android:name="com.github.lhoyong.imagepicker.ui.Detail" />
     </application>
 </manifest>

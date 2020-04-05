@@ -1,0 +1,31 @@
+name: Publish Bintray
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Create key file
+        run: ./.github/script/create-key.sh
+        env:
+          BINTRAY_API_KEY: ${{secrets.BINTRAY_API_KEY }}
+          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+      - name: Create AAR
+        run: ./gradlew :imagepicker:assembleRelease
+      - name: Publish
+        run: ./.github/script/publish.sh
+        env:
+          BINTRAY_GPG: ${{secrets.BINTRAY_GPG }}
+          BINTRAY_USERNAME: ${{ secrets.BINTRAY_USER }}
+

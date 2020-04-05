@@ -1,6 +1,6 @@
 # ImagePickerView
 
-![DOWNLOAD](https://jitpack.io/v/lhoyong/ImagePickerView.svg)
+![DOWNLOAD](https://img.shields.io/bintray/v/lhoyong/maven/com.lhoyong:imagepicker)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ImagePickerView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/7976)
 
 
@@ -12,13 +12,13 @@ Support DayNight Mode.
 
 ## OverView
 
-<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/anim.gif" width = "264" height = "464"/>
+<img src="https://github.com/lhoyong/ImagePicker/blob/master/art/anim.gif" width = "264" height = "464"/>
 
 
 
 ## ScreenShot
 
-<img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/3.png?raw=true" width = "264" height = "464"/><img src="https://github.com/lhoyong/ImagePickerView/blob/master/art/4.png?raw=true" width = "264" height = "464"/>
+<img src="https://github.com/lhoyong/ImagePicker/blob/master/art/3.png?raw=true" width = "264" height = "464"/><img src="https://github.com/lhoyong/ImagePicker/blob/master/art/4.png?raw=true" width = "264" height = "464"/>
 
 ## Setup
 
@@ -28,7 +28,7 @@ Add root build.gradle
 allprojects {
     repositories {
 	...
-	maven { url 'https://jitpack.io' }
+	maven { url 'http://dl.bintray.com/lhoyong/maven/' }
     }
 }
 ~~~~
@@ -37,7 +37,7 @@ Add the dependency
 
 ~~~~xml
 dependencies {
-    implementation 'com.github.lhoyong:ImagePickerView:latestVersion'
+    implementation 'com.lhoyong:imagepicker:latestVersion'
 }
 ~~~~
 
@@ -45,10 +45,10 @@ dependencies {
 
 ## Usage
 
-Add ImagePickerView your Activity or Fragments  [Example](https://github.com/lhoyong/ImagePickerView/blob/master/app/src/main/java/com/github/lhoyong/imagepickerview/MainActivity.kt).
+Add ImagePickerView your Activity or Fragments  [Example](https://github.com/lhoyong/ImagePicker/blob/master/app/src/main/java/com/github/lhoyong/imagepicker/MainActivity.kt).
 
-When you [Click on the Image](https://github.com/lhoyong/ImagePickerView/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepickerview/adapter/GalleryAdapter.kt#L49), it will move to [Detail](https://github.com/lhoyong/ImagePickerView/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepickerview/ui/Detail.kt) Screen.
-If [Long Click](https://github.com/lhoyong/ImagePickerView/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepickerview/adapter/GalleryAdapter.kt#L57) Image, start scale Animations and visible checkbox. Bul Already Clicked Images, can not move to Detail Screen.
+When you [Click on the Image](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepicker/adapter/GalleryAdapter.kt#L49), it will move to [Detail](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepicker/ui/Detail.kt) Screen.
+If [Long Click](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepicker/adapter/GalleryAdapter.kt#L57) Image, start scale Animations and visible checkbox. Bul Already Clicked Images, can not move to Detail Screen.
 
 ~~~~kotlin
 ImagePickerView.Builder()

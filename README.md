@@ -22,17 +22,6 @@ Support DayNight Mode.
 
 ## Setup
 
-Add root build.gradle
-
-~~~~xml
-allprojects {
-    repositories {
-	...
-	maven { url 'http://dl.bintray.com/lhoyong/maven/' }
-    }
-}
-~~~~
-
 Add the dependency
 
 ~~~~xml

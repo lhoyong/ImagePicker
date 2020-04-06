@@ -1,6 +1,7 @@
 # ImagePickerView
 
 ![DOWNLOAD](https://img.shields.io/bintray/v/lhoyong/maven/com.lhoyong:imagepicker)
+![Build](https://github.com/lhoyong/ImagePicker/workflows/Build/badge.svg)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ImagePickerView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/7976)
 
 
@@ -34,10 +35,10 @@ dependencies {
 
 ## Usage
 
-Add ImagePickerView your Activity or Fragments  [Example](https://github.com/lhoyong/ImagePicker/blob/master/app/src/main/java/com/github/lhoyong/imagepicker/MainActivity.kt).
+Add ImagePickerView your Activity or Fragments  [Example](https://github.com/lhoyong/ImagePicker/blob/master/sample/src/main/java/com/lhoyong/imagepicker/MainActivity.kt).
 
-When you [Click on the Image](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepicker/adapter/GalleryAdapter.kt#L49), it will move to [Detail](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepicker/ui/Detail.kt) Screen.
-If [Long Click](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/github/lhoyong/imagepicker/adapter/GalleryAdapter.kt#L57) Image, start scale Animations and visible checkbox. Bul Already Clicked Images, can not move to Detail Screen.
+When you [Click on the Image](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/lhoyong/imagepicker/adapter/GalleryAdapter.kt#L49), it will move to [Detail](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/lhoyong/imagepicker/ui/Detail.kt) Screen.
+If [Long Click](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/lhoyong/imagepicker/adapter/GalleryAdapter.kt#L57) Image, start scale Animations and visible checkbox. Bul Already Clicked Images, can not move to Detail Screen.
 
 ~~~~kotlin
 ImagePickerView.Builder()

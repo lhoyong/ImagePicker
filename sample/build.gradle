@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.github.lhoyong.imagepicker"
+        applicationId "com.lhoyong.imagepicker"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

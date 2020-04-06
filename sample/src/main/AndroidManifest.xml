@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.lhoyong.imagepicker">
+    package="com.lhoyong.imagepicker">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.github.lhoyong.imagepicker.MainActivity">
+        <activity android:name="com.lhoyong.imagepicker.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

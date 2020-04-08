@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+apply from: rootProject.file('ktlint.gradle')
 apply from: rootProject.file('gradle/dependencies.gradle')
 apply from: rootProject.file('bintray.gradle')
 

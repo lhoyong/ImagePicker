@@ -21,8 +21,15 @@ import com.lhoyong.imagepicker.core.ImageLoader
 import com.lhoyong.imagepicker.core.ImageLoaderImpl
 import com.lhoyong.imagepicker.model.Image
 import com.lhoyong.imagepicker.model.SetUp
-import com.lhoyong.imagepicker.util.*
-import kotlinx.android.synthetic.main.gallery.*
+import com.lhoyong.imagepicker.util.EXTRA_SETUP
+import com.lhoyong.imagepicker.util.GridSpacingItemDecoration
+import com.lhoyong.imagepicker.util.PermissionUtil
+import com.lhoyong.imagepicker.util.RESULT_NAME
+import com.lhoyong.imagepicker.util.StringUtil
+import com.lhoyong.imagepicker.util.toOptionCompat
+import kotlinx.android.synthetic.main.gallery.progress_bar
+import kotlinx.android.synthetic.main.gallery.recycler_view
+import kotlinx.android.synthetic.main.gallery.tool_bar
 
 class Gallery : BaseActivity(R.layout.gallery),
     GalleryListener {

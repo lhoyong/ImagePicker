@@ -27,7 +27,6 @@ class ImagePickerView {
                 ),
                 requestCode ?: REQUEST_CODE
             )
-
         }
     }
 }

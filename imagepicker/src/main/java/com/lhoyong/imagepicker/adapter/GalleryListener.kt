@@ -5,7 +5,7 @@ import com.lhoyong.imagepicker.model.Image
 
 interface GalleryListener {
 
-    //set Checked status with start Animation
+    // set Checked status with start Animation
     fun onChecked(image: Image)
 
     // Move to Detail View

@@ -22,7 +22,6 @@ class Config {
     }
 
     fun build(): Config = this
-
 }
 
 fun config(action: Config.() -> Unit) = Config()

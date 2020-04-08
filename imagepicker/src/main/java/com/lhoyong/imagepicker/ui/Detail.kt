@@ -61,10 +61,8 @@ class Detail : BaseActivity(R.layout.detail) {
                         supportStartPostponedEnterTransition()
                         return false
                     }
-
                 })
                 .into(detail_image)
         }
-
     }
 }

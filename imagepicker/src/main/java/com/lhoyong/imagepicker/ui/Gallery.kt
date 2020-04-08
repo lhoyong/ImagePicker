@@ -8,6 +8,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -50,9 +52,11 @@ class Gallery : BaseActivity(R.layout.gallery),
         ImageLoaderImpl(this)
     }
 
-    private val setUp by lazy { intent.getParcelableExtra<SetUp>(
-        EXTRA_SETUP
-    ) }
+    private val setUp by lazy {
+        intent.getParcelableExtra<SetUp>(
+            EXTRA_SETUP
+        )
+    }
 
     private var resultName = RESULT_NAME
 
@@ -89,7 +93,8 @@ class Gallery : BaseActivity(R.layout.gallery),
 
         PermissionUtil.hasGalleryPermissionDenied(this) {
             if (it) {
-                PermissionUtil.requestGalleryPermission(this,
+                PermissionUtil.requestGalleryPermission(
+                    this,
                     REQUEST_PERMISSION
                 )
             } else {
@@ -127,6 +132,21 @@ class Gallery : BaseActivity(R.layout.gallery),
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.gallery_toolbar_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_done -> {
+                selectedList()?.let { uris -> receiveImages(uris) }
+                return false
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun loadImages() {
         imageLoader.load {
             imageList.addAll(it)
@@ -140,22 +160,11 @@ class Gallery : BaseActivity(R.layout.gallery),
         // set left icon , inflate menu
         tool_bar.apply {
             setNavigationIcon(R.drawable.ic_arrow_24dp)
-            inflateMenu(R.menu.menu)
         }
 
         // left icon click event
         tool_bar.setNavigationOnClickListener {
             finish()
-        }
-
-        tool_bar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.menu_done -> {
-                    selectedList()?.let { uris -> receiveImages(uris) }
-                    true
-                }
-                else -> super.onOptionsItemSelected(it)
-            }
         }
     }
 

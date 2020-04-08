@@ -10,15 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
-        android:elevation="4dp"
         android:paddingBottom="4dp"
         android:theme="@style/AppbarStyle">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tool_bar"
+            style="Widget.MaterialComponents.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
             tools:layout_height="56dp" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -33,7 +32,7 @@
         app:layoutManager="GridLayoutManager"
         app:spanCount="3"
         tools:itemCount="3"
-        tools:listitem="@layout/item_image" />
+        tools:listitem="@layout/item_gallery_image" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

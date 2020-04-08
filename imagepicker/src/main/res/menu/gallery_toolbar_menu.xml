@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_done"
+        android:id="@+id/gallery_done"
         android:icon="@drawable/ic_check_24dp"
         android:title="@string/menu_done"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

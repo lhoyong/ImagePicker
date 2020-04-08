@@ -146,7 +146,7 @@ class Gallery : BaseActivity(R.layout.gallery),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_done -> {
+            R.id.gallery_done -> {
                 selectedList()?.let { uris -> receiveImages(uris) }
                 return false
             }
@@ -163,7 +163,7 @@ class Gallery : BaseActivity(R.layout.gallery),
     }
 
     private fun configureToolbar() {
-
+        setSupportActionBar(tool_bar)
         // set left icon , inflate menu
         tool_bar.apply {
             setNavigationIcon(R.drawable.ic_arrow_24dp)

@@ -164,6 +164,7 @@ internal class Gallery : BaseActivity(R.layout.gallery),
 
     private fun configureToolbar() {
         setSupportActionBar(tool_bar)
+        supportActionBar?.title = ""
         // set left icon , inflate menu
         tool_bar.apply {
             setNavigationIcon(R.drawable.ic_arrow_24dp)

@@ -7,11 +7,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lhoyong.imagepicker.core.config
+import com.lhoyong.sample_navigation.NavigationActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private companion object{
+    private companion object {
         private const val RESULT_NAME = "result"
     }
 
@@ -27,6 +28,10 @@ class MainActivity : AppCompatActivity() {
 
         button.setOnClickListener {
             openImagePicker()
+        }
+
+        nav.setOnClickListener {
+            startActivity(Intent(this, NavigationActivity::class.java))
         }
     }
 

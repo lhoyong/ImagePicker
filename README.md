@@ -48,7 +48,7 @@ ImagePickerView.Builder()
                     max { 5 }
                 }
             }
-            .start(this)	// if used fragment, .start(requireContext())
+            .start(this)	
 ~~~~
 
 

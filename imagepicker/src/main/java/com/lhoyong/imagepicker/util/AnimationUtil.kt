@@ -3,7 +3,7 @@ package com.lhoyong.imagepicker.util
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 
-inline fun scaleStart(view: View, crossinline finish: () -> Unit) {
+internal inline fun scaleStart(view: View, crossinline finish: () -> Unit) {
     view.animate()
         .scaleX(0.85f)
         .scaleY(0.85f)
@@ -16,7 +16,7 @@ inline fun scaleStart(view: View, crossinline finish: () -> Unit) {
         }.start()
 }
 
-inline fun scaleRevert(view: View, crossinline finish: () -> Unit) {
+internal inline fun scaleRevert(view: View, crossinline finish: () -> Unit) {
     view.animate()
         .scaleX(1f)
         .scaleY(1f)

@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 
-object PermissionUtil {
+internal object PermissionUtil {
 
     fun requestGalleryPermission(activity: Activity, requestCode: Int) {
         ActivityCompat.requestPermissions(

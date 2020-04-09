@@ -2,7 +2,7 @@ package com.lhoyong.imagepicker.util
 
 import android.content.Context
 
-object StringUtil {
+internal object StringUtil {
 
     fun getStringRes(context: Context, resId: Int): String {
         return context.resources.getString(resId)

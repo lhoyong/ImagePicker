@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.gallery.progress_bar
 import kotlinx.android.synthetic.main.gallery.recycler_view
 import kotlinx.android.synthetic.main.gallery.tool_bar
 
-class Gallery : BaseActivity(R.layout.gallery),
+internal class Gallery : BaseActivity(R.layout.gallery),
     GalleryListener {
 
     companion object {

@@ -9,7 +9,7 @@ interface ImageLoader {
     fun load(action: (List<Image>) -> Unit)
 }
 
-class ImageLoaderImpl(private val context: Context) :
+internal class ImageLoaderImpl(private val context: Context) :
     ImageLoader {
 
     override fun load(action: (List<Image>) -> Unit) {

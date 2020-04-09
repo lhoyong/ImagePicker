@@ -13,7 +13,7 @@ import com.lhoyong.imagepicker.util.GlideApp
 import com.lhoyong.imagepicker.util.scaleRevert
 import com.lhoyong.imagepicker.util.scaleStart
 
-class ImagePickerAdapter(
+internal class ImagePickerAdapter(
     private val items: List<Image>,
     private val listener: GalleryListener
 ) : RecyclerView.Adapter<ImagePickerViewHolder>() {
@@ -38,7 +38,7 @@ class ImagePickerAdapter(
     }
 }
 
-class ImagePickerViewHolder(
+internal class ImagePickerViewHolder(
     view: View,
     private val listener: GalleryListener
 ) : RecyclerView.ViewHolder(view) {

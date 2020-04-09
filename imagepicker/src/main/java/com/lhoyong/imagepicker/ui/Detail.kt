@@ -15,7 +15,7 @@ import com.lhoyong.imagepicker.util.EXTRA_IMAGE
 import com.lhoyong.imagepicker.util.GlideApp
 import kotlinx.android.synthetic.main.detail.*
 
-class Detail : BaseActivity(R.layout.detail) {
+internal class Detail : BaseActivity(R.layout.detail) {
 
     companion object {
 

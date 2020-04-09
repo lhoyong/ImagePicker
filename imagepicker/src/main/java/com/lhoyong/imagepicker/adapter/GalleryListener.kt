@@ -3,7 +3,7 @@ package com.lhoyong.imagepicker.adapter
 import android.view.View
 import com.lhoyong.imagepicker.model.Image
 
-interface GalleryListener {
+internal interface GalleryListener {
 
     // set Checked status with start Animation
     fun onChecked(image: Image)

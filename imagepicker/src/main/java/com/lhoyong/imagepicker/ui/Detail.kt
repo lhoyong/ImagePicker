@@ -4,15 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.lhoyong.imagepicker.base.BaseActivity
 import com.lhoyong.imagepicker.R
 import com.lhoyong.imagepicker.model.Image
 import com.lhoyong.imagepicker.util.EXTRA_IMAGE
-import com.lhoyong.imagepicker.util.GlideApp
 import kotlinx.android.synthetic.main.detail.*
 
 internal class Detail : BaseActivity(R.layout.detail) {
@@ -26,9 +27,11 @@ internal class Detail : BaseActivity(R.layout.detail) {
         }
     }
 
-    private val image by lazy { intent.getParcelableExtra<Image>(
-        EXTRA_IMAGE
-    ) }
+    private val image by lazy {
+        intent.getParcelableExtra<Image>(
+            EXTRA_IMAGE
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +39,13 @@ internal class Detail : BaseActivity(R.layout.detail) {
         if (image == null) {
             throw IllegalArgumentException("Missing Image")
         }
+        supportPostponeEnterTransition()
 
         image?.let {
-            GlideApp.with(this)
+            detail_image.transitionName = image.id.toString()
+            Glide.with(this)
                 .load(it.path)
+                .apply(RequestOptions().dontTransform())
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,

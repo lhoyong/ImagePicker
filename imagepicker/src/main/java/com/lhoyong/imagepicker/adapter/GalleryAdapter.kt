@@ -7,9 +7,9 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.lhoyong.imagepicker.R
 import com.lhoyong.imagepicker.model.Image
-import com.lhoyong.imagepicker.util.GlideApp
 import com.lhoyong.imagepicker.util.scaleRevert
 import com.lhoyong.imagepicker.util.scaleStart
 
@@ -49,6 +49,7 @@ internal class ImagePickerViewHolder(
 
     fun bind(image: Image) {
 
+        imageView.transitionName = image.id.toString()
         itemView.setOnClickListener {
             if (listener.isMultipleChecked) {
                 listener.onChecked(image)
@@ -64,7 +65,7 @@ internal class ImagePickerViewHolder(
             return@setOnLongClickListener true
         }
 
-        GlideApp.with(imageView)
+        Glide.with(imageView)
             .load(image.path)
             .centerCrop()
             .into(imageView)

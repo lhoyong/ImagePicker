@@ -1,2 +1,4 @@
-include ':sample', ':imagepicker'
-include ':sample_navigation'
+include ':sample',
+        ':sample_navigation',
+        ':imagepicker',
+        ':imagepicker-util'

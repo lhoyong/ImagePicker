@@ -39,7 +39,7 @@ internal class Detail : BaseActivity(R.layout.detail) {
         if (image == null) {
             throw IllegalArgumentException("Missing Image")
         }
-        supportPostponeEnterTransition()
+        postponeEnterTransition()
 
         image?.let {
             detail_image.transitionName = image.id.toString()
@@ -53,7 +53,7 @@ internal class Detail : BaseActivity(R.layout.detail) {
                         target: Target<Drawable>?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        supportStartPostponedEnterTransition()
+                        supportPostponeEnterTransition()
                         return false
                     }
 
@@ -64,7 +64,7 @@ internal class Detail : BaseActivity(R.layout.detail) {
                         dataSource: DataSource?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        supportStartPostponedEnterTransition()
+                        startPostponedEnterTransition()
                         return false
                     }
                 })

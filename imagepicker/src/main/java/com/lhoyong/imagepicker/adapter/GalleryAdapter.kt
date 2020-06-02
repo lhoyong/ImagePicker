@@ -1,14 +1,12 @@
 package com.lhoyong.imagepicker.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lhoyong.imagepicker.R
+import com.lhoyong.imagepicker.databinding.ItemGalleryImageBinding
 import com.lhoyong.imagepicker.model.Image
 import com.lhoyong.imagepicker.util.scaleRevert
 import com.lhoyong.imagepicker.util.scaleStart
@@ -19,9 +17,10 @@ internal class ImagePickerAdapter(
 ) : RecyclerView.Adapter<ImagePickerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagePickerViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_gallery_image, parent, false)
+        val binding =
+            ItemGalleryImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ImagePickerViewHolder(
-            view,
+            binding,
             listener
         )
     }
@@ -39,22 +38,19 @@ internal class ImagePickerAdapter(
 }
 
 internal class ImagePickerViewHolder(
-    view: View,
+    private val binding: ItemGalleryImageBinding,
     private val listener: GalleryListener
-) : RecyclerView.ViewHolder(view) {
+) : RecyclerView.ViewHolder(binding.root) {
 
-    private val imageView = view.findViewById<ImageView>(R.id.item_image)
-    private val filter = view.findViewById<View>(R.id.image_filter)
-    private val checkbox = view.findViewById<AppCompatImageView>(R.id.image_checkbox)
 
     fun bind(image: Image) {
 
-        imageView.transitionName = image.id.toString()
-        itemView.setOnClickListener {
+        binding.itemImage.transitionName = image.id.toString()
+        binding.root.setOnClickListener {
             if (listener.isMultipleChecked) {
                 listener.onChecked(image)
             } else {
-                listener.onClick(imageView, image)
+                listener.onClick(binding.itemImage, image)
             }
         }
 
@@ -65,20 +61,20 @@ internal class ImagePickerViewHolder(
             return@setOnLongClickListener true
         }
 
-        Glide.with(imageView)
+        Glide.with(binding.itemImage)
             .load(image.path)
             .centerCrop()
-            .into(imageView)
+            .into(binding.itemImage)
 
         if (image.selected) {
-            checkbox.setBackgroundResource(R.drawable.bg_checked)
-            scaleStart(imageView) {
-                filter.isVisible = true
+            binding.imageCheckbox.setBackgroundResource(R.drawable.bg_checked)
+            scaleStart(binding.itemImage) {
+                binding.imageFilter.isVisible = true
             }
         } else {
-            checkbox.setBackgroundResource(R.drawable.bg_unchecked)
-            scaleRevert(imageView) {
-                filter.isVisible = false
+            binding.imageCheckbox.setBackgroundResource(R.drawable.bg_unchecked)
+            scaleRevert(binding.itemImage) {
+                binding.imageFilter.isVisible = false
             }
         }
     }

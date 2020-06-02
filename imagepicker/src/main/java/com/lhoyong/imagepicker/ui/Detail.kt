@@ -4,19 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.lhoyong.imagepicker.base.BaseActivity
-import com.lhoyong.imagepicker.R
+import com.lhoyong.imagepicker.databinding.DetailBinding
 import com.lhoyong.imagepicker.model.Image
 import com.lhoyong.imagepicker.util.EXTRA_IMAGE
-import kotlinx.android.synthetic.main.detail.*
+import kotlinx.android.synthetic.main.detail.detail_image
 
-internal class Detail : BaseActivity(R.layout.detail) {
+internal class Detail : AppCompatActivity() {
+
+    private lateinit var binding: DetailBinding
 
     companion object {
 
@@ -35,6 +37,8 @@ internal class Detail : BaseActivity(R.layout.detail) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = DetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if (image == null) {
             throw IllegalArgumentException("Missing Image")
@@ -42,7 +46,7 @@ internal class Detail : BaseActivity(R.layout.detail) {
         postponeEnterTransition()
 
         image?.let {
-            detail_image.transitionName = image.id.toString()
+            binding.detailImage.transitionName = image.id.toString()
             Glide.with(this)
                 .load(it.path)
                 .apply(RequestOptions().dontTransform())

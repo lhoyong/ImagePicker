@@ -10,10 +10,6 @@ class ImagePickerView {
 
     class Builder {
 
-        private companion object {
-            private const val REQUEST_CODE = 3030
-        }
-
         private var config: Config? = null
 
         fun setup(action: () -> Config) = apply { config = action() }
@@ -37,5 +33,9 @@ class ImagePickerView {
                 requestCode ?: REQUEST_CODE
             )
         }
+    }
+
+    companion object {
+        private const val REQUEST_CODE = 3030
     }
 }

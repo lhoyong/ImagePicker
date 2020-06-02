@@ -11,14 +11,15 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.lhoyong.imagepicker.base.BaseActivity
 import com.lhoyong.imagepicker.R
 import com.lhoyong.imagepicker.adapter.GalleryListener
 import com.lhoyong.imagepicker.adapter.ImagePickerAdapter
 import com.lhoyong.imagepicker.core.ImageLoader
 import com.lhoyong.imagepicker.core.ImageLoaderImpl
+import com.lhoyong.imagepicker.databinding.GalleryBinding
 import com.lhoyong.imagepicker.model.Image
 import com.lhoyong.imagepicker.model.SetUp
 import com.lhoyong.imagepicker.util.EXTRA_SETUP
@@ -27,12 +28,10 @@ import com.lhoyong.imagepicker.util.PermissionUtil
 import com.lhoyong.imagepicker.util.RESULT_NAME
 import com.lhoyong.imagepicker.util.StringUtil
 import com.lhoyong.imagepicker.util.toOptionCompat
-import kotlinx.android.synthetic.main.gallery.progress_bar
-import kotlinx.android.synthetic.main.gallery.recycler_view
-import kotlinx.android.synthetic.main.gallery.tool_bar
 
-internal class Gallery : BaseActivity(R.layout.gallery),
-    GalleryListener {
+internal class Gallery : AppCompatActivity(), GalleryListener {
+
+    private lateinit var binding: GalleryBinding
 
     companion object {
         private const val TAG = "ImagePickerView"
@@ -71,9 +70,11 @@ internal class Gallery : BaseActivity(R.layout.gallery),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = GalleryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         configureToolbar()
 
-        recycler_view.apply {
+        binding.recyclerView.apply {
             adapter = ImagePickerAdapter(
                 imageList,
                 this@Gallery
@@ -162,21 +163,21 @@ internal class Gallery : BaseActivity(R.layout.gallery),
     private fun loadImages() {
         imageLoader.load {
             imageList.addAll(it)
-            (recycler_view.adapter as ImagePickerAdapter).notifyDataSetChanged()
-            progress_bar.isVisible = false
+            (binding.recyclerView.adapter as ImagePickerAdapter).notifyDataSetChanged()
+            binding.progressBar.isVisible = false
         }
     }
 
     private fun configureToolbar() {
-        setSupportActionBar(tool_bar)
+        setSupportActionBar(binding.toolBar)
         supportActionBar?.title = ""
         // set left icon , inflate menu
-        tool_bar.apply {
+        binding.toolBar.apply {
             setNavigationIcon(R.drawable.ic_arrow_24dp)
         }
 
         // left icon click event
-        tool_bar.setNavigationOnClickListener {
+        binding.toolBar.setNavigationOnClickListener {
             finish()
         }
     }
@@ -204,7 +205,7 @@ internal class Gallery : BaseActivity(R.layout.gallery),
             }
         }
         isMultipleChecked = isMultiCheckedChanged()
-        (recycler_view.adapter as ImagePickerAdapter).updateItem(image)
+        (binding.recyclerView.adapter as ImagePickerAdapter).updateItem(image)
         toolbarText(selectedList.size)
     }
 
@@ -215,7 +216,7 @@ internal class Gallery : BaseActivity(R.layout.gallery),
             ""
         }
 
-        tool_bar.title = selectedText
+        binding.toolBar.title = selectedText
     }
 
     override fun onChecked(image: Image) {

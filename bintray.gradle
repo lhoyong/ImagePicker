@@ -1,12 +1,6 @@
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
-
-def libGroupId = 'com.lhoyong'
-def libArtifactId = 'imagepicker'
-def libVersion = '1.4.5'
-def libDesc = 'Simple Android ImagePicker Library.'
-def libLicenses = ['Apache-2.0']
-def libVCSUrl = 'https://github.com/lhoyong/ImagePicker.git'
+apply from: rootProject.file('dependencies.gradle')
 
 task sourceJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -16,9 +10,9 @@ task sourceJar(type: Jar) {
 publishing {
     publications {
         MyPublication(MavenPublication) {
-            groupId libGroupId
-            artifactId libArtifactId
-            version libVersion
+            groupId versions.groupId
+            artifactId versions.artifactId
+            version versions.versionName
 
             pom.withXml {
                 def dependenciesNode = asNode().getAt('dependencies')[0] ?: asNode().appendNode('dependencies')
@@ -34,7 +28,7 @@ publishing {
             }
 
             artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/$libArtifactId-release.aar")
+            artifact("$buildDir/outputs/aar/$versions.artifactId-release.aar")
         }
     }
 }
@@ -49,13 +43,13 @@ bintray {
     publications = ['MyPublication']
     pkg {
         repo = "maven"
-        name = "$libGroupId:$libArtifactId"
-        desc = libDesc
-        licenses = libLicenses
-        vcsUrl = libVCSUrl
+        name = "$versions.groupId:$versions.artifactId"
+        desc = versions.desc
+        licenses = ['Apache-2.0']
+        vcsUrl = versions.vsc
         version {
-            name = libVersion
-            vcsTag = libVersion
+            name = versions.versionName
+            vcsTag = versions.versionName
             released = new Date()
         }
     }

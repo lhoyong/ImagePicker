@@ -94,10 +94,6 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
                 true
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
 
         setUp?.let {
             maxSize = it.max
@@ -220,10 +216,12 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
     }
 
     override fun onChecked(image: Image) {
+        Log.d(TAG, "item Checked")
         selectedImage(image)
     }
 
     override fun onClick(view: View, image: Image) {
+        Log.d(TAG, "item Clicked")
         startActivity(
             Detail.starterIntent(
                 this,

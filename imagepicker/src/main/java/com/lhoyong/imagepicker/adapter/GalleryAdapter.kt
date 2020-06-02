@@ -42,7 +42,6 @@ internal class ImagePickerViewHolder(
     private val listener: GalleryListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
-
     fun bind(image: Image) {
 
         binding.itemImage.transitionName = image.id.toString()

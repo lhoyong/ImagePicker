@@ -39,7 +39,6 @@ android {
 }
 
 dependencies {
-    implementation project(":imagepicker-util")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 
     implementation "androidx.appcompat:appcompat:$versions.appCompat"

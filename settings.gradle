@@ -1,4 +1,3 @@
 include ':sample',
         ':sample_navigation',
-        ':imagepicker',
-        ':imagepicker-util'
+        ':imagepicker'

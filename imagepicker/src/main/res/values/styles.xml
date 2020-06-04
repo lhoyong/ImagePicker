@@ -2,11 +2,8 @@
 <resources>
 
     <style name="Theme.ImagePicker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-
-        <item name="android:windowContentTransitions">true</item>
         <!-- This is important! Don't forget to set window background -->
         <item name="android:windowBackground">@color/background</item>
 

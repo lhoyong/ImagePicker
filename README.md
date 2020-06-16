@@ -27,7 +27,7 @@ Add the dependency
 
 ~~~~xml
 dependencies {
-    implementation 'com.lhoyong:imagepicker:latestVersion'
+    implementation "com.lhoyong:imagepicker:$latestVersion"
 }
 ~~~~
 
@@ -40,22 +40,38 @@ Add ImagePickerView your Activity or Fragments  [Example](https://github.com/lho
 When you [Click on the Image](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/lhoyong/imagepicker/adapter/GalleryAdapter.kt#L49), it will move to [Detail](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/lhoyong/imagepicker/ui/Detail.kt) Screen.
 If [Long Click](https://github.com/lhoyong/ImagePicker/blob/master/imagepicker/src/main/java/com/lhoyong/imagepicker/adapter/GalleryAdapter.kt#L57) Image, start scale Animations and visible checkbox. Bul Already Clicked Images, can not move to Detail Screen.
 
+
+
+
+- Single Select
+
 ~~~~kotlin
 ImagePickerView.Builder()
-            .setup {
-                config {
-                    name { RESULT_NAME }
-                    max { 5 }
-                }
-            }
-            .start(this)	
+    .setup {
+        name { RESULT_NAME }
+        title { "Image Picker" } // optional
+        single { true } 
+    }
+    .start(this)
 ~~~~
 
 
+- Multiple Select
 
-Finish image select task, update ui for `onActivityResult received data` 
+~~~~kotlin
+ImagePickerView.Builder()
+    .setup {
+        max { 5} // default 30
+        name { RESULT_NAME }
+        title { "Image Picker" } // optional, if not used toolbar title display selected image count
+        single { false }  // optional, single = false
+    }
+    .start(this)
+~~~~
 
-For Example
+
+Finish image select task, update ui for `onActivityResult` received data. 
+
 ~~~~kotlin
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

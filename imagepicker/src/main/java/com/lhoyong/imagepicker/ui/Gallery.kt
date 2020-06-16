@@ -47,21 +47,22 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
         }
     }
 
+    private val setUp by lazy {
+        intent.getParcelableExtra<SetUp>(
+            EXTRA_SETUP
+        )
+    }
+
     private var maxSize =
         MAXIMUM_SELECTION
 
     private val imageList = mutableListOf<Image>()
     private val selectedList = mutableListOf<Image>()
     private var selectedText = ""
+    private var isSingle = false
 
     private val imageLoader: ImageLoader by lazy {
         ImageLoaderImpl(this)
-    }
-
-    private val setUp by lazy {
-        intent.getParcelableExtra<SetUp>(
-            EXTRA_SETUP
-        )
     }
 
     private var resultName = RESULT_NAME
@@ -72,12 +73,20 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
         super.onCreate(savedInstanceState)
         binding = GalleryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        configureToolbar()
+
+        setUp?.let {
+            maxSize = it.max
+            resultName = it.name
+            isSingle = it.single
+            selectedText = it.title ?: return@let
+        }
+        initToolbar()
 
         binding.recyclerView.apply {
             adapter = ImagePickerAdapter(
                 imageList,
-                this@Gallery
+                this@Gallery,
+                isSingle
             )
             addItemDecoration(
                 GridSpacingItemDecoration(
@@ -93,11 +102,6 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
                 startPostponedEnterTransition()
                 true
             }
-        }
-
-        setUp?.let {
-            maxSize = it.max
-            resultName = it.name
         }
 
         PermissionUtil.hasGalleryPermissionDenied(this) {
@@ -142,14 +146,16 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.gallery_toolbar_menu, menu)
+        if (!isSingle) {
+            menuInflater.inflate(R.menu.gallery_toolbar_menu, menu)
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.gallery_done -> {
-                selectedList()?.let { uris -> receiveImages(uris) }
+                onGalleryDone()
                 return false
             }
         }
@@ -164,9 +170,9 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
         }
     }
 
-    private fun configureToolbar() {
+    private fun initToolbar() {
         setSupportActionBar(binding.toolBar)
-        supportActionBar?.title = ""
+        supportActionBar?.title = selectedText
         // set left icon , inflate menu
         binding.toolBar.apply {
             setNavigationIcon(R.drawable.ic_arrow_24dp)
@@ -200,18 +206,21 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
                 )
             }
         }
-        isMultipleChecked = isMultiCheckedChanged()
+        isMultipleChecked = isImageMultipleSelected()
         (binding.recyclerView.adapter as ImagePickerAdapter).updateItem(image)
         toolbarText(selectedList.size)
     }
 
     private fun toolbarText(count: Int) {
-        selectedText = if (count > 0) {
-            count.toString()
+        selectedText = if (isSingle) {
+            setUp?.title ?: ""
         } else {
-            ""
+            if (count > 0) {
+                count.toString()
+            } else {
+                setUp?.title ?: ""
+            }
         }
-
         binding.toolBar.title = selectedText
     }
 
@@ -231,6 +240,16 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
         )
     }
 
+    override fun onClick(image: Image) {
+        selectedImage(image).also {
+            onGalleryDone()
+        }
+    }
+
+    private fun onGalleryDone() {
+        selectedList()?.let { uris -> receiveImages(uris) }
+    }
+
     private fun receiveImages(uris: List<Uri>) {
         val resultIntent = Intent().apply {
             putParcelableArrayListExtra(resultName, ArrayList(uris))
@@ -239,5 +258,7 @@ internal class Gallery : AppCompatActivity(), GalleryListener {
         finish()
     }
 
-    private fun isMultiCheckedChanged() = imageList.find { it.selected } != null
+    private fun isImageMultipleSelected(): Boolean {
+        return imageList.find { it.selected } != null
+    }
 }

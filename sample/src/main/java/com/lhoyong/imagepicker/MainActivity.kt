@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.lhoyong.imagepicker.core.config
 import com.lhoyong.sample_navigation.NavigationActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -38,10 +37,10 @@ class MainActivity : AppCompatActivity() {
     private fun openImagePicker() {
         ImagePickerView.Builder()
             .setup {
-                config {
-                    name { RESULT_NAME }
-                    max { 5 }
-                }
+                name { RESULT_NAME }
+                max { 5 }
+                title { "Image Picker" }
+                single { false }
             }
             .start(this)
     }

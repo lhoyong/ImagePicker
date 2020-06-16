@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lhoyong.imagepicker.ImagePickerView
-import com.lhoyong.imagepicker.core.config
 import kotlinx.android.synthetic.main.fragment_navigation.open
 import kotlinx.android.synthetic.main.fragment_navigation.recycler_view
 
@@ -45,10 +44,8 @@ class NavigationFragment : Fragment() {
     private fun openImagePicker() {
         ImagePickerView.Builder()
             .setup {
-                config {
-                    name { RESULT_NAME }
-                    max { 5 }
-                }
+                name { RESULT_NAME }
+                max { 5 }
             }
             .start(this, 33)
     }
@@ -59,7 +56,6 @@ class NavigationFragment : Fragment() {
             if (requestCode == 33) {
                 val images = data?.getParcelableArrayListExtra<Uri>(RESULT_NAME)
                 images?.let {
-                    println(it)
                     (recycler_view.adapter as NavigationAdapter).submitList(it.toList())
                 }
             }

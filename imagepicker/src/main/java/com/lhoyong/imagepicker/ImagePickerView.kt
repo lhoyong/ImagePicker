@@ -2,23 +2,26 @@ package com.lhoyong.imagepicker
 
 import android.app.Activity
 import androidx.fragment.app.Fragment
-import com.lhoyong.imagepicker.core.Config
-import com.lhoyong.imagepicker.core.toSetup
+import com.lhoyong.imagepicker.model.SetUp
 import com.lhoyong.imagepicker.ui.Gallery
+
+@DslMarker
+annotation class ImagePickerViewDSL
 
 class ImagePickerView {
 
+    @ImagePickerViewDSL
     class Builder {
 
-        private var config: Config? = null
+        private var setup: SetUp? = null
 
-        fun setup(action: () -> Config) = apply { config = action() }
+        fun setup(action: SetUp.() -> Unit) = apply { setup = SetUp().apply(action).build() }
 
         fun start(activity: Activity, requestCode: Int? = null) {
             activity.startActivityForResult(
                 Gallery.starterIntent(
                     activity,
-                    config?.toSetup()
+                    setup
                 ),
                 requestCode ?: REQUEST_CODE
             )
@@ -28,7 +31,7 @@ class ImagePickerView {
             fragment.startActivityForResult(
                 Gallery.starterIntent(
                     fragment.requireContext(),
-                    config?.toSetup()
+                    setup
                 ),
                 requestCode ?: REQUEST_CODE
             )

@@ -13,7 +13,8 @@ import com.lhoyong.imagepicker.util.scaleStart
 
 internal class ImagePickerAdapter(
     private val items: List<Image>,
-    private val listener: GalleryListener
+    private val listener: GalleryListener,
+    private val isSingleType: Boolean
 ) : RecyclerView.Adapter<ImagePickerViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagePickerViewHolder {
@@ -21,7 +22,8 @@ internal class ImagePickerAdapter(
             ItemGalleryImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ImagePickerViewHolder(
             binding,
-            listener
+            listener,
+            isSingleType
         )
     }
 
@@ -39,42 +41,50 @@ internal class ImagePickerAdapter(
 
 internal class ImagePickerViewHolder(
     private val binding: ItemGalleryImageBinding,
-    private val listener: GalleryListener
+    private val listener: GalleryListener,
+    private val isSingleType: Boolean
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(image: Image) {
 
-        binding.itemImage.transitionName = image.id.toString()
-        binding.root.setOnClickListener {
-            if (listener.isMultipleChecked) {
-                listener.onChecked(image)
-            } else {
-                listener.onClick(binding.itemImage, image)
+        if (isSingleType) {
+            binding.root.setOnClickListener {
+                listener.onClick(image)
             }
-        }
+            binding.imageCheckbox.isVisible = false
+        } else {
+            binding.itemImage.transitionName = image.id.toString()
+            binding.root.setOnClickListener {
+                if (listener.isMultipleChecked) {
+                    listener.onChecked(image)
+                } else {
+                    listener.onClick(binding.itemImage, image)
+                }
+            }
 
-        itemView.setOnLongClickListener {
-            if (!listener.isMultipleChecked) {
-                listener.onChecked(image)
+            itemView.setOnLongClickListener {
+                if (!listener.isMultipleChecked) {
+                    listener.onChecked(image)
+                }
+                return@setOnLongClickListener true
             }
-            return@setOnLongClickListener true
+
+            if (image.selected) {
+                binding.imageCheckbox.setBackgroundResource(R.drawable.bg_checked)
+                scaleStart(binding.itemImage) {
+                    binding.imageFilter.isVisible = true
+                }
+            } else {
+                binding.imageCheckbox.setBackgroundResource(R.drawable.bg_unchecked)
+                scaleRevert(binding.itemImage) {
+                    binding.imageFilter.isVisible = false
+                }
+            }
         }
 
         Glide.with(binding.itemImage)
             .load(image.path)
             .centerCrop()
             .into(binding.itemImage)
-
-        if (image.selected) {
-            binding.imageCheckbox.setBackgroundResource(R.drawable.bg_checked)
-            scaleStart(binding.itemImage) {
-                binding.imageFilter.isVisible = true
-            }
-        } else {
-            binding.imageCheckbox.setBackgroundResource(R.drawable.bg_unchecked)
-            scaleRevert(binding.itemImage) {
-                binding.imageFilter.isVisible = false
-            }
-        }
     }
 }

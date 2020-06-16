@@ -11,6 +11,9 @@ internal interface GalleryListener {
     // Move to Detail View
     fun onClick(view: View, image: Image)
 
+    // single selected
+    fun onClick(image: Image)
+
     // image is already checked
     var isMultipleChecked: Boolean
 }

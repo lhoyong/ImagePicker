@@ -4,13 +4,15 @@
     <style name="Theme.ImagePicker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <!-- This is important! Don't forget to set window background -->
         <item name="android:windowBackground">@color/background</item>
+        <item name="android:statusBarColor">@color/status_bar</item>
 
     </style>
 
-    <style name="AppbarStyle">
-        <item name="android:background">@color/background</item>
+    <style name="Theme.ImagePicker.AppbarStyle">
+        <item name="android:background">?android:attr/colorBackground</item>
         <item name="colorControlHighlight">@color/background</item>
     </style>
+
+    <style name="Theme.ImagePicker.Toolbar" parent="Widget.MaterialComponents.Toolbar.Surface" />
 </resources>

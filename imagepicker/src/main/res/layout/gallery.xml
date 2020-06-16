@@ -3,19 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
-        android:paddingBottom="4dp"
-        android:theme="@style/AppbarStyle">
+        android:theme="@style/Theme.ImagePicker.AppbarStyle">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tool_bar"
-            style="Widget.MaterialComponents.Toolbar"
+            style="@style/Theme.ImagePicker.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             tools:layout_height="56dp" />
@@ -29,9 +28,10 @@
         android:clipToPadding="false"
         android:paddingTop="?attr/actionBarSize"
         android:scrollbars="vertical"
+        android:splitMotionEvents="false"
         app:layoutManager="GridLayoutManager"
         app:spanCount="3"
-        tools:itemCount="3"
+        tools:itemCount="15"
         tools:listitem="@layout/item_gallery_image" />
 
     <ProgressBar

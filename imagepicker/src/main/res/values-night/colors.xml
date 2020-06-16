@@ -7,4 +7,5 @@
     <color name="black">#000000</color>
     <color name="background">#000000</color>
     <color name="checkbox_stroke">#eaeaea</color>
+    <color name="status_bar">#121212</color>
 </resources>

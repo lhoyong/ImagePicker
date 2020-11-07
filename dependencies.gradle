@@ -5,16 +5,17 @@ ext.versions = [
 
         minSdk      : 21,
         compileSdk  : 29,
-        kotlin      : '1.3.72',
-        buildGradle : '4.0.0',
+        kotlin      : '1.4.10',
+        buildGradle : '4.1.0',
 
-        appCompat   : '1.1.0',
-        core        : '1.3.0',
-        contraint   : '1.1.3',
+        appCompat   : '1.2.0',
+        core        : '1.3.2',
+        contraint   : '2.0.4',
         recyclerView: '1.1.0',
-        material    : '1.2.0-beta01',
+        material    : '1.2.1',
         glide       : '4.11.0',
-        navigation  : '2.3.0-beta01',
+        navigation  : '2.3.1',
+        fragment    : '1.2.5',
 
         // publish
         bintray     : '1.8.4',

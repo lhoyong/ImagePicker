@@ -44,9 +44,10 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$versions.appCompat"
     implementation "androidx.core:core-ktx:$versions.core"
-    implementation "androidx.constraintlayout:constraintlayout:$versions.contraint"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.contraint}"
     implementation "androidx.recyclerview:recyclerview:$versions.recyclerView"
     implementation "com.google.android.material:material:$versions.material"
+    implementation "androidx.fragment:fragment-ktx:$versions.fragment"
 
     implementation "com.github.bumptech.glide:glide:$versions.glide"
     kapt "com.github.bumptech.glide:compiler:$versions.glide"
